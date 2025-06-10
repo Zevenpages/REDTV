@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - RED TV</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="../assets/favicon.svg" type="image/svg+xml">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar styles */
+        .admin-sidebar {
+            width: 250px;
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 20px 0;
+            flex-shrink: 0;
+        }
+        
+        .admin-logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .admin-logo img {
+            height: 40px;
+        }
+        
+        .admin-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .admin-nav li {
+            margin-bottom: 5px;
+        }
+        
+        .admin-nav a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-nav a:hover,
+        .admin-nav a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .admin-nav .material-icons {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .admin-user {
+            margin-top: auto;
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-user .material-icons {
+            margin-right: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 50%;
+        }
+        
+        .admin-user-info {
+            flex: 1;
+        }
+        
+        .admin-user-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .admin-user-role {
+            font-size: 12px;
+            color: #ccc;
+        }
+        
+        .logout-btn {
+            color: #ccc;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .logout-btn:hover {
+            color: white;
+        }
+        
+        /* Main content styles */
+        .admin-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .page-title h1 {
+            margin: 0;
+            font-size: 24px;
+            color: var(--primary-dark);
+        }
+        
+        .header-actions .btn {
+            margin-left: 10px;
+        }
+        
+        /* Plans management styles */
+        .plan-management {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .plans-toolbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .plans-search {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px 10px;
+            width: 300px;
+        }
+        
+        .plans-search input {
+            border: none;
+            background: none;
+            outline: none;
+            padding: 5px;
+            width: 100%;
+            font-size: 14px;
+        }
+        
+        .plans-search .material-icons {
+            color: #999;
+            margin-right: 5px;
+            font-size: 20px;
+        }
+        
+        .btn-add-plan {
+            display: flex;
+            align-items: center;
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-add-plan:hover {
+            background-color: #cc0000;
+        }
+        
+        .btn-add-plan .material-icons {
+            margin-right: 5px;
+            font-size: 20px;
+        }
+        
+        .plans-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .plans-table th {
+            text-align: left;
+            padding: 12px 20px;
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .plans-table td {
+            padding: 12px 20px;
+            border-bottom: 1px solid #eee;
+            color: #333;
+        }
+        
+        .plans-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .plan-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-icon {
+            background: none;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-edit {
+            color: #2196F3;
+        }
+        
+        .btn-edit:hover {
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+        
+        .btn-delete {
+            color: #F44336;
+        }
+        
+        .btn-delete:hover {
+            background-color: rgba(244, 67, 54, 0.1);
+        }
+        
+        .plan-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+        }
+        
+        .status-inactive {
+            background-color: #FFEBEE;
+            color: #C62828;
+        }
+        
+        .status-draft {
+            background-color: #E0E0E0;
+            color: #616161;
+        }
+        
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: var(--primary-dark);
+        }
+        
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .btn-cancel {
+            background-color: #f5f5f5;
+            color: #333;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #eee;
+        }
+        
+        .btn-save {
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-save:hover {
+            background-color: #cc0000;
+        }
+        
+        .form-row {
+            margin-bottom: 15px;
+        }
+        
+        .form-row label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-row input,
+        .form-row select,
+        .form-row textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-row textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .confirmation-modal .modal-body {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .confirmation-modal .material-icons {
+            font-size: 60px;
+            color: #F44336;
+            margin-bottom: 20px;
+        }
+        
+        /* Configuration Panel Styles */
+        .config-panel, .reports-panel {
+            display: none;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .config-section {
+            margin-bottom: 30px;
+        }
+        
+        .config-section h3 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .theme-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .theme-option {
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 10px;
+            width: 120px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-option.active {
+            border-color: var(--primary-red);
+        }
+        
+        .theme-option-light {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        
+        .theme-option-dark {
+            background-color: #333;
+            color: #fff;
+        }
+        
+        .theme-option h4 {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        
+        .theme-icon {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+        
+        /* Charts Styles */
+        .chart-container {
+            height: 400px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-controls {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .chart-controls select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 150px;
+        }
+        
+        .chart-controls label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .admin-content {
+            background-color: #1a1a1a;
+        }
+        
+        body.dark-mode .page-title h1 {
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .plan-management,
+        body.dark-mode .config-panel,
+        body.dark-mode .reports-panel {
+            background-color: #2c2c2c;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.dark-mode .plans-table th {
+            background-color: #3c3c3c;
+            color: #e0e0e0;
+            border-color: #444;
+        }
+        
+        body.dark-mode .plans-table td {
+            border-color: #444;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .plans-table tr:hover {
+            background-color: #3a3a3a;
+        }
+        
+        body.dark-mode .plans-search {
+            background-color: #3c3c3c;
+            border-color: #444;
+        }
+        
+        body.dark-mode .plans-search input {
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .plans-toolbar {
+            background-color: #2a2a2a;
+            border-color: #444;
+        }
+        
+        body.dark-mode .admin-header {
+            border-color: #444;
+        }
+        
+        body.dark-mode .config-section h3 {
+            color: #e0e0e0;
+            border-color: #444;
+        }
+        
+        body.dark-mode .form-row input,
+        body.dark-mode .form-row select,
+        body.dark-mode .form-row textarea {
+            background-color: #3c3c3c;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .chart-controls select {
+            background-color: #3c3c3c;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+        
+        /* Plan Availability Styles */
+        .plan-availability {
+            margin-top: 10px;
+        }
+        
+        .availability-hint {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #666;
+        }
+        
+        .availability-group {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            width: 100%;
+        }
+        
+        .locality-group {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-left: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* Style for urban/rural checkboxes to use full width */
+        .checkbox-item.sub-item {
+            padding-left: 30px; /* Indent to show hierarchy */
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        /* Add separator between locality groups */
+        .locality-group {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .locality-group:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+        
+        body.dark-mode .locality-group {
+            border-color: #444;
+        }
+        
+        /* Ensure checkbox and label alignment */
+        .availability-group .checkbox-item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            justify-content: start;
+            align-items: center;
+            column-gap: 10px;
+        }
+
+        .checkbox-item label {
+            text-align: left;
+            width: 100%;
+        }
+        
+        /* Dark mode adjustments */
+        body.dark-mode .availability-group {
+            background-color: #3c3c3c;
+            border-color: #444;
+        }
+        
+        body.dark-mode .availability-hint {
+            color: #bbb;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <a href="../index.html">
+                    <img src="../assets/logo.svg" alt="RED TV Logo">
+                </a>
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li>
+                        <a href="dashboard.html" class="active">
+                            <span class="material-icons">dashboard</span>
+                            Panel de Planes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#informes">
+                            <span class="material-icons">bar_chart</span>
+                            Informes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#configuracion">
+                            <span class="material-icons">settings</span>
+                            Configuración
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="admin-user">
+                <span class="material-icons">person</span>
+                <div class="admin-user-info">
+                    <div class="admin-user-name">Admin</div>
+                    <div class="admin-user-role">Administrador</div>
+                </div>
+                <button id="logout-btn" class="logout-btn">
+                    <span class="material-icons">logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- Plans Management Panel -->
+            <div id="planes-panel">
+                <div class="admin-header">
+                    <div class="page-title">
+                        <h1>Gestión de Planes</h1>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn-add-plan" id="btn-add-plan">
+                            <span class="material-icons">add</span>
+                            Nuevo Plan
+                        </button>
+                    </div>
+                </div>
+
+                <div class="plan-management">
+                    <div class="plans-toolbar">
+                        <div class="plans-search">
+                            <span class="material-icons">search</span>
+                            <input type="text" placeholder="Buscar planes..." id="plan-search">
+                        </div>
+                    </div>
+
+                    <table class="plans-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre del Plan</th>
+                                <th>Tipo</th>
+                                <th>Características</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="plans-list">
+                            <!-- Sample plans - will be replaced by dynamic data -->
+                            <tr>
+                                <td>Fibra Básico</td>
+                                <td>Internet Fibra</td>
+                                <td>50 Mbps</td>
+                                <td>$10,000</td>
+                                <td><span class="plan-status status-active">Activo</span></td>
+                                <td>
+                                    <div class="plan-actions">
+                                        <button class="btn-icon btn-edit" data-plan-id="1">
+                                            <span class="material-icons">edit</span>
+                                        </button>
+                                        <button class="btn-icon btn-delete" data-plan-id="1">
+                                            <span class="material-icons">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Fibra Standard</td>
+                                <td>Internet Fibra</td>
+                                <td>100 Mbps</td>
+                                <td>$15,000</td>
+                                <td><span class="plan-status status-active">Activo</span></td>
+                                <td>
+                                    <div class="plan-actions">
+                                        <button class="btn-icon btn-edit" data-plan-id="2">
+                                            <span class="material-icons">edit</span>
+                                        </button>
+                                        <button class="btn-icon btn-delete" data-plan-id="2">
+                                            <span class="material-icons">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Fibra Premium</td>
+                                <td>Internet Fibra</td>
+                                <td>300 Mbps</td>
+                                <td>$20,000</td>
+                                <td><span class="plan-status status-active">Activo</span></td>
+                                <td>
+                                    <div class="plan-actions">
+                                        <button class="btn-icon btn-edit" data-plan-id="3">
+                                            <span class="material-icons">edit</span>
+                                        </button>
+                                        <button class="btn-icon btn-delete" data-plan-id="3">
+                                            <span class="material-icons">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>IBLAST Básico</td>
+                                <td>Internet Inalámbrico</td>
+                                <td>20 Mbps</td>
+                                <td>$8,000</td>
+                                <td><span class="plan-status status-active">Activo</span></td>
+                                <td>
+                                    <div class="plan-actions">
+                                        <button class="btn-icon btn-edit" data-plan-id="4">
+                                            <span class="material-icons">edit</span>
+                                        </button>
+                                        <button class="btn-icon btn-delete" data-plan-id="4">
+                                            <span class="material-icons">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>IBLAST Plus</td>
+                                <td>Internet Inalámbrico</td>
+                                <td>50 Mbps</td>
+                                <td>$12,000</td>
+                                <td><span class="plan-status status-active">Activo</span></td>
+                                <td>
+                                    <div class="plan-actions">
+                                        <button class="btn-icon btn-edit" data-plan-id="5">
+                                            <span class="material-icons">edit</span>
+                                        </button>
+                                        <button class="btn-icon btn-delete" data-plan-id="5">
+                                            <span class="material-icons">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>RED TV Play Básico</td>
+                                <td>Streaming</td>
+                                <td>1 Dispositivo, SD</td>
+                                <td>$3,000</td>
+                                <td><span class="plan-status status-inactive">Inactivo</span></td>
+                                <td>
+                                    <div class="plan-actions">
+                                        <button class="btn-icon btn-edit" data-plan-id="6">
+                                            <span class="material-icons">edit</span>
+                                        </button>
+                                        <button class="btn-icon btn-delete" data-plan-id="6">
+                                            <span class="material-icons">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>RED TV Play Premium</td>
+                                <td>Streaming</td>
+                                <td>5 Dispositivos, HD/4K</td>
+                                <td>$5,000</td>
+                                <td><span class="plan-status status-active">Activo</span></td>
+                                <td>
+                                    <div class="plan-actions">
+                                        <button class="btn-icon btn-edit" data-plan-id="7">
+                                            <span class="material-icons">edit</span>
+                                        </button>
+                                        <button class="btn-icon btn-delete" data-plan-id="7">
+                                            <span class="material-icons">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Combo Fibra + Play</td>
+                                <td>Combo</td>
+                                <td>100 Mbps + Play Premium</td>
+                                <td>$18,000</td>
+                                <td><span class="plan-status status-draft">Borrador</span></td>
+                                <td>
+                                    <div class="plan-actions">
+                                        <button class="btn-icon btn-edit" data-plan-id="8">
+                                            <span class="material-icons">edit</span>
+                                        </button>
+                                        <button class="btn-icon btn-delete" data-plan-id="8">
+                                            <span class="material-icons">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reports Panel -->
+            <div id="informes-panel" class="reports-panel">
+                <div class="admin-header">
+                    <div class="page-title">
+                        <h1>Informes y Estadísticas</h1>
+                    </div>
+                </div>
+
+                <div class="chart-controls">
+                    <div>
+                        <label for="chart-type">Tipo de Gráfico</label>
+                        <select id="chart-type">
+                            <option value="cities">Ciudades</option>
+                            <option value="plans">Planes</option>
+                            <option value="members">Miembros</option>
+                            <option value="revenue">Ingresos</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="chart-period">Período</label>
+                        <select id="chart-period">
+                            <option value="month">Último Mes</option>
+                            <option value="quarter">Último Trimestre</option>
+                            <option value="year">Último Año</option>
+                            <option value="all">Todo el Tiempo</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="chart-display">Mostrar como</label>
+                        <select id="chart-display">
+                            <option value="bar">Gráfico de Barras</option>
+                            <option value="line">Gráfico de Líneas</option>
+                            <option value="pie">Gráfico Circular</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="chart-container" id="main-chart">
+                    <!-- Chart will be rendered here -->
+                    <img src="https://via.placeholder.com/800x400?text=Gráfico+de+Estadísticas+(Mockup)" alt="Mockup de Gráfico" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                </div>
+
+                <div class="chart-summary">
+                    <h3>Resumen</h3>
+                    <p>Este es un mockup de los informes estadísticos. En una implementación real, esta sección mostraría gráficos interactivos basados en datos reales con la posibilidad de filtrar por diferentes variables como ciudades, planes, miembros y análisis de ingresos.</p>
+                </div>
+            </div>
+
+            <!-- Configuration Panel -->
+            <div id="config-panel" class="config-panel">
+                <div class="admin-header">
+                    <div class="page-title">
+                        <h1>Configuración</h1>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h3>Tema de la Interfaz</h3>
+                    <div class="theme-selector">
+                        <div class="theme-option theme-option-light active" id="theme-light">
+                            <div class="theme-icon">
+                                <span class="material-icons">light_mode</span>
+                            </div>
+                            <h4>Modo Claro</h4>
+                        </div>
+                        <div class="theme-option theme-option-dark" id="theme-dark">
+                            <div class="theme-icon">
+                                <span class="material-icons">dark_mode</span>
+                            </div>
+                            <h4>Modo Oscuro</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h3>Cambiar Credenciales</h3>
+                    <form id="credentials-form">
+                        <div class="form-row">
+                            <label for="current-password">Contraseña Actual</label>
+                            <input type="password" id="current-password" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="new-username">Nuevo Usuario</label>
+                            <input type="text" id="new-username">
+                        </div>
+                        <div class="form-row">
+                            <label for="new-password">Nueva Contraseña</label>
+                            <input type="password" id="new-password">
+                        </div>
+                        <div class="form-row">
+                            <label for="confirm-password">Confirmar Contraseña</label>
+                            <input type="password" id="confirm-password">
+                        </div>
+                        <button type="submit" class="btn-save">Guardar Cambios</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Plan Modal -->
+    <div class="modal-overlay" id="plan-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modal-title">Agregar Nuevo Plan</h2>
+                <button class="btn-close" id="btn-close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="plan-form">
+                    <div class="form-row">
+                        <label for="plan-name">Nombre del Plan</label>
+                        <input type="text" id="plan-name" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="plan-type">Tipo de Plan</label>
+                        <select id="plan-type" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="fibra">Internet Fibra</option>
+                            <option value="inalambrico">Internet Inalámbrico</option>
+                            <option value="streaming">Streaming</option>
+                            <option value="combo">Combo</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="plan-features">Características</label>
+                        <textarea id="plan-features" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <label for="plan-price">Precio ($)</label>
+                        <input type="number" id="plan-price" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="plan-status">Estado</label>
+                        <select id="plan-status" required>
+                            <option value="active">Activo</option>
+                            <option value="inactive">Inactivo</option>
+                            <option value="draft">Borrador</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label>Disponibilidad del Plan</label>
+                        <div class="plan-availability">
+                            <div class="availability-hint">Este plan está disponible para:</div>
+                            
+                            <div class="availability-group">
+                                <div class="locality-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="resistencia" name="availability[]" value="resistencia">
+                                        <label for="resistencia">Resistencia</label>
+                                    </div>
+                                    <div class="checkbox-item sub-item">
+                                        <input type="checkbox" id="res-rural" name="availability[]" value="resistencia-rural">
+                                        <label for="res-rural">Rural</label>
+                                    </div>
+                                    <div class="checkbox-item sub-item">
+                                        <input type="checkbox" id="res-urbano" name="availability[]" value="resistencia-urbano">
+                                        <label for="res-urbano">Urbano</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="barranqueras" name="availability[]" value="barranqueras">
+                                        <label for="barranqueras">Barranqueras</label>
+                                    </div>
+                                    <div class="checkbox-item sub-item">
+                                        <input type="checkbox" id="bar-rural" name="availability[]" value="barranqueras-rural">
+                                        <label for="bar-rural">Rural</label>
+                                    </div>
+                                    <div class="checkbox-item sub-item">
+                                        <input type="checkbox" id="bar-urbano" name="availability[]" value="barranqueras-urbano">
+                                        <label for="bar-urbano">Urbano</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="btn-cancel">Cancelar</button>
+                <button class="btn-save" id="btn-save">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay confirmation-modal" id="delete-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Confirmar Eliminación</h2>
+                <button class="btn-close" id="btn-close-delete">&times;</button>
+            </div>
+            <div class="modal-body">
+                <span class="material-icons">warning</span>
+                <p>¿Estás seguro de que deseas eliminar este plan?</p>
+                <p>Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="btn-cancel-delete">Cancelar</button>
+                <button class="btn-save" id="btn-confirm-delete">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elements
+            const logoutBtn = document.getElementById('logout-btn');
+            const addPlanBtn = document.getElementById('btn-add-plan');
+            const planSearch = document.getElementById('plan-search');
+            const planModal = document.getElementById('plan-modal');
+            const deleteModal = document.getElementById('delete-modal');
+            const closeModal = document.getElementById('btn-close-modal');
+            const closeDeleteModal = document.getElementById('btn-close-delete');
+            const cancelBtn = document.getElementById('btn-cancel');
+            const saveBtn = document.getElementById('btn-save');
+            const cancelDeleteBtn = document.getElementById('btn-cancel-delete');
+            const confirmDeleteBtn = document.getElementById('btn-confirm-delete');
+            const modalTitle = document.getElementById('modal-title');
+            const planForm = document.getElementById('plan-form');
+            const planNameInput = document.getElementById('plan-name');
+            const planTypeInput = document.getElementById('plan-type');
+            const planFeaturesInput = document.getElementById('plan-features');
+            const planPriceInput = document.getElementById('plan-price');
+            const planStatusInput = document.getElementById('plan-status');
+            const plansTableBody = document.getElementById('plans-list');
+            
+            let currentPlanId = null;
+            
+            // Logout functionality
+            logoutBtn.addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+            
+            // Open Add Plan Modal
+            addPlanBtn.addEventListener('click', function() {
+                modalTitle.textContent = 'Agregar Nuevo Plan';
+                planForm.reset();
+                currentPlanId = null;
+                planModal.style.display = 'flex';
+            });
+            
+            // Close modals
+            closeModal.addEventListener('click', function() {
+                planModal.style.display = 'none';
+            });
+            
+            closeDeleteModal.addEventListener('click', function() {
+                deleteModal.style.display = 'none';
+            });
+            
+            cancelBtn.addEventListener('click', function() {
+                planModal.style.display = 'none';
+            });
+            
+            cancelDeleteBtn.addEventListener('click', function() {
+                deleteModal.style.display = 'none';
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === planModal) {
+                    planModal.style.display = 'none';
+                }
+                if (e.target === deleteModal) {
+                    deleteModal.style.display = 'none';
+                }
+            });
+            
+            // Edit Plan buttons
+            const editButtons = document.querySelectorAll('.btn-edit');
+            editButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const planId = this.getAttribute('data-plan-id');
+                    editPlan(planId);
+                });
+            });
+            
+            // Delete Plan buttons
+            const deleteButtons = document.querySelectorAll('.btn-delete');
+            deleteButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const planId = this.getAttribute('data-plan-id');
+                    currentPlanId = planId;
+                    deleteModal.style.display = 'flex';
+                });
+            });
+            
+            // Confirm Delete
+            confirmDeleteBtn.addEventListener('click', function() {
+                if (currentPlanId) {
+                    // In a real app, you would call an API to delete the plan
+                    // For this mockup, we'll just hide the row
+                    const row = document.querySelector(`button[data-plan-id="${currentPlanId}"]`).closest('tr');
+                    row.style.display = 'none';
+                    deleteModal.style.display = 'none';
+                    
+                    // Feedback message would be shown here
+                    alert('Plan eliminado correctamente');
+                }
+            });
+            
+            // Save Plan
+            saveBtn.addEventListener('click', function() {
+                // In a real app, you would validate the form and call an API
+                // For this mockup, we'll just show a success message
+                if (planNameInput.value && planTypeInput.value && planFeaturesInput.value && planPriceInput.value) {
+                    planModal.style.display = 'none';
+                    
+                    // Feedback message
+                    if (currentPlanId) {
+                        alert('Plan actualizado correctamente');
+                    } else {
+                        alert('Plan creado correctamente');
+                    }
+                } else {
+                    alert('Por favor complete todos los campos requeridos');
+                }
+            });
+            
+            // Plan search functionality
+            planSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = plansTableBody.querySelectorAll('tr');
+                
+                rows.forEach(function(row) {
+                    const planName = row.cells[0].textContent.toLowerCase();
+                    const planType = row.cells[1].textContent.toLowerCase();
+                    
+                    if (planName.includes(searchTerm) || planType.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Edit plan function
+            function editPlan(planId) {
+                // In a real app, you would fetch plan details from the server
+                // For this mockup, we'll use hardcoded data based on planId
+                modalTitle.textContent = 'Editar Plan';
+                currentPlanId = planId;
+                
+                // Get data from the table row (just for mockup purposes)
+                const row = document.querySelector(`button[data-plan-id="${planId}"]`).closest('tr');
+                planNameInput.value = row.cells[0].textContent;
+                
+                // Set the plan type based on text content (this would be more precise in a real app)
+                const planTypeText = row.cells[1].textContent;
+                if (planTypeText.includes('Fibra')) {
+                    planTypeInput.value = 'fibra';
+                } else if (planTypeText.includes('Inalámbrico')) {
+                    planTypeInput.value = 'inalambrico';
+                } else if (planTypeText.includes('Streaming')) {
+                    planTypeInput.value = 'streaming';
+                } else if (planTypeText.includes('Combo')) {
+                    planTypeInput.value = 'combo';
+                }
+                
+                planFeaturesInput.value = row.cells[2].textContent;
+                planPriceInput.value = row.cells[3].textContent.replace('$', '').replace(',', '');
+                
+                // Set status based on class
+                const statusSpan = row.cells[4].querySelector('.plan-status');
+                if (statusSpan.classList.contains('status-active')) {
+                    planStatusInput.value = 'active';
+                } else if (statusSpan.classList.contains('status-inactive')) {
+                    planStatusInput.value = 'inactive';
+                } else if (statusSpan.classList.contains('status-draft')) {
+                    planStatusInput.value = 'draft';
+                }
+                
+                // Reset all checkboxes to unchecked
+                document.querySelectorAll('input[name="availability[]"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                // In a real app, you would set the checkboxes based on data
+                // For this mockup, we'll set some checkboxes for illustrative purposes
+                if (planId === '4' || planId === '5') {
+                    // For IBLAST plans, check rural options
+                    document.getElementById('res-rural').checked = true;
+                    document.getElementById('bar-rural').checked = true;
+                    document.getElementById('bar-urbano').checked = true;
+                } else if (planId === '1' || planId === '2' || planId === '3') {
+                    // For Fibra plans, check urban options
+                    document.getElementById('res-urbano').checked = true;
+                    document.getElementById('bar-urbano').checked = true;
+                } else if (planId === '6' || planId === '7') {
+                    // For Streaming plans, check all
+                    document.getElementById('res-urbano').checked = true;
+                    document.getElementById('res-rural').checked = true;
+                    document.getElementById('bar-urbano').checked = true;
+                }
+                
+                planModal.style.display = 'flex';
+            }
+            
+            // Navigation between panels
+            const planesPanel = document.getElementById('planes-panel');
+            const informesPanel = document.getElementById('informes-panel');
+            const configPanel = document.getElementById('config-panel');
+            
+            // Get all navigation links
+            const navLinks = document.querySelectorAll('.admin-nav a');
+            
+            // Add click event to each nav link
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    // Remove active class from all links
+                    navLinks.forEach(function(link) {
+                        link.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Hide all panels
+                    planesPanel.style.display = 'none';
+                    informesPanel.style.display = 'none';
+                    configPanel.style.display = 'none';
+                    
+                    // Show the appropriate panel based on the href
+                    const targetId = this.getAttribute('href');
+                    if (targetId === 'dashboard.html' || targetId === '#planes') {
+                        planesPanel.style.display = 'block';
+                    } else if (targetId === '#informes') {
+                        informesPanel.style.display = 'block';
+                    } else if (targetId === '#configuracion') {
+                        configPanel.style.display = 'block';
+                    }
+                    
+                    // Prevent default anchor behavior if it's not the dashboard link
+                    if (targetId !== 'dashboard.html') {
+                        e.preventDefault();
+                    }
+                });
+            });
+            
+            // Show the default panel (planes)
+            planesPanel.style.display = 'block';
+            informesPanel.style.display = 'none';
+            configPanel.style.display = 'none';
+            
+            // Theme switching functionality
+            const lightTheme = document.getElementById('theme-light');
+            const darkTheme = document.getElementById('theme-dark');
+            
+            lightTheme.addEventListener('click', function() {
+                document.body.classList.remove('dark-mode');
+                lightTheme.classList.add('active');
+                darkTheme.classList.remove('active');
+                localStorage.setItem('admin-theme', 'light');
+            });
+            
+            darkTheme.addEventListener('click', function() {
+                document.body.classList.add('dark-mode');
+                darkTheme.classList.add('active');
+                lightTheme.classList.remove('active');
+                localStorage.setItem('admin-theme', 'dark');
+            });
+            
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('admin-theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                darkTheme.classList.add('active');
+                lightTheme.classList.remove('active');
+            }
+            
+            // Credentials form submission
+            const credentialsForm = document.getElementById('credentials-form');
+            credentialsForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const currentPassword = document.getElementById('current-password').value;
+                const newUsername = document.getElementById('new-username').value;
+                const newPassword = document.getElementById('new-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                
+                // Basic validation
+                if (currentPassword !== '123') {
+                    alert('La contraseña actual es incorrecta');
+                    return;
+                }
+                
+                if (newPassword !== confirmPassword) {
+                    alert('Las contraseñas nuevas no coinciden');
+                    return;
+                }
+                
+                // In a real app, we would make an API call to update credentials
+                alert('Credenciales actualizadas correctamente');
+                credentialsForm.reset();
+            });
+            
+            // Chart controls
+            const chartType = document.getElementById('chart-type');
+            const chartPeriod = document.getElementById('chart-period');
+            const chartDisplay = document.getElementById('chart-display');
+            
+            // Add event listeners to chart controls to update chart
+            // In a real app, this would redraw the chart with new data
+            [chartType, chartPeriod, chartDisplay].forEach(function(control) {
+                control.addEventListener('change', function() {
+                    console.log('Chart updated with:', {
+                        type: chartType.value,
+                        period: chartPeriod.value,
+                        display: chartDisplay.value
+                    });
+                    // In a real app, we would update the chart here
+                    // For mockup, just show an alert
+                    alert('Gráfico actualizado (Mockup)');
+                });
+            });
+            
+            // Link locality checkboxes with their urban/rural options
+            document.getElementById('resistencia').addEventListener('change', function() {
+                const isChecked = this.checked;
+                document.getElementById('res-rural').disabled = !isChecked;
+                document.getElementById('res-urbano').disabled = !isChecked;
+                
+                if (!isChecked) {
+                    document.getElementById('res-rural').checked = false;
+                    document.getElementById('res-urbano').checked = false;
+                }
+            });
+            
+            document.getElementById('barranqueras').addEventListener('change', function() {
+                const isChecked = this.checked;
+                document.getElementById('bar-rural').disabled = !isChecked;
+                document.getElementById('bar-urbano').disabled = !isChecked;
+                
+                if (!isChecked) {
+                    document.getElementById('bar-rural').checked = false;
+                    document.getElementById('bar-urbano').checked = false;
+                }
+            });
+            
+            // Additional initialization of checkbox states
+            function initCheckboxStates() {
+                // For Resistencia
+                const resChecked = document.getElementById('resistencia').checked;
+                document.getElementById('res-rural').disabled = !resChecked;
+                document.getElementById('res-urbano').disabled = !resChecked;
+                
+                // For Barranqueras
+                const barChecked = document.getElementById('barranqueras').checked;
+                document.getElementById('bar-rural').disabled = !barChecked;
+                document.getElementById('bar-urbano').disabled = !barChecked;
+            }
+            
+            // Call on page load
+            initCheckboxStates();
+        });
+    </script>
+</body>
+</html> 

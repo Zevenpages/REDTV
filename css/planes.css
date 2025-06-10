@@ -1,0 +1,598 @@
+/* 
+* RED TV Plans Page Styles
+*/
+
+/* Page Title Section */
+.page-title {
+    background-color: var(--primary-dark);
+    color: var(--primary-white);
+    padding: 50px 0;
+    text-align: center;
+}
+
+.page-title h1 {
+    margin-bottom: 0.5rem;
+}
+
+.page-title p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* Service Wizard */
+.service-wizard {
+    padding: 60px 0;
+}
+
+.wizard-steps {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.wizard-step {
+    background-color: var(--primary-white);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 30px;
+    display: none;
+}
+
+.wizard-step.active {
+    display: block;
+}
+
+.wizard-step h2 {
+    color: var(--primary-dark);
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--primary-red);
+    display: inline-block;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.form-control:focus {
+    border-color: var(--primary-red);
+    outline: none;
+}
+
+/* Zone Toggle */
+.zone-toggle {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.toggle-option {
+    flex: 1;
+    position: relative;
+}
+
+.toggle-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-option label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #f5f5f5;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 30px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.toggle-option input[type="radio"]:checked + label {
+    background-color: #ffeeee;
+    border-color: var(--primary-red);
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
+}
+
+.toggle-option label span.material-icons {
+    font-size: 48px;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.toggle-option input[type="radio"]:checked + label span.material-icons {
+    color: var(--primary-red);
+}
+
+.toggle-option label span:not(.material-icons) {
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--primary-dark);
+}
+
+/* Wizard Buttons */
+.wizard-buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.wizard-buttons button {
+    padding: 12px 25px;
+    font-size: 16px;
+}
+
+.wizard-buttons button:only-child {
+    margin-left: auto;
+}
+
+/* Available Services Section */
+.available-services {
+    padding: 60px 0;
+    background-color: #f9f9f9;
+}
+
+.available-services h2 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.service-card {
+    background-color: var(--primary-white);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.service-header {
+    background-color: var(--primary-red);
+    color: var(--primary-white);
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.service-header .service-icon {
+    margin-bottom: 10px;
+}
+
+.service-header .service-icon .material-icons {
+    font-size: 36px;
+    color: white;
+}
+
+.service-header h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 0.5rem 0;
+}
+
+.service-price {
+    margin-top: 8px;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.service-price .currency {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.service-price .amount {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.service-price .period {
+    font-size: 1rem;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+.service-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.service-features {
+    margin: 1.25rem 0;
+    flex-grow: 1;
+}
+
+.service-features ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+    align-items: start;
+}
+
+.service-features li {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Open Sans', system-ui, sans-serif;
+    margin-left: 20px;
+}
+
+.service-features li .material-icons {
+    color: var(--primary-red);
+    margin-right: 20px;
+    margin-left: 16px;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.service-feature {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Open Sans', system-ui, sans-serif;
+    margin-left: 20px;
+}
+
+.service-feature .material-icons {
+    color: var(--primary-red);
+    margin-right: 20px;
+    margin-left: 16px;
+    font-size: 22px;
+}
+
+.service-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding: 0;
+    align-items: center;
+}
+
+.service-actions .btn {
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+    width: auto;
+    min-width: 180px;
+    margin-bottom: 10px;
+}
+
+.service-actions .btn-primary {
+    background-color: var(--primary-red);
+    color: white;
+}
+
+.service-actions .btn-primary:hover {
+    background-color: #cc0000;
+}
+
+.service-actions .btn-secondary {
+    background-color: transparent;
+    color: var(--primary-dark);
+    border: 1px solid var(--primary-dark);
+}
+
+.service-actions .btn-secondary:hover {
+    background-color: var(--primary-dark);
+    color: white;
+}
+
+.service-cta {
+    text-align: center;
+}
+
+.service-cta .btn {
+    width: 100%;
+    padding: 2px;
+    font-size: 16px;
+}
+
+.advisor-cta {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.advisor-cta .btn {
+    background-color: transparent;
+    color: var(--primary-dark);
+    border: 1px solid var(--primary-dark);
+    padding: 10px 15px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.advisor-cta .btn:hover {
+    background-color: var(--primary-dark);
+    color: var(--primary-white);
+}
+
+/* Contact CTA */
+.contact-cta {
+    text-align: center;
+    margin-top: 50px;
+    padding: 30px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+}
+
+.contact-cta p {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+/* Support Contact Section */
+.support-contact {
+    padding: 60px 0;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+.support-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.support-btn {
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    min-width: 200px;
+}
+
+.support-text {
+    font-size: 16px;
+    color: #6c757d;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .zone-toggle {
+        flex-direction: column;
+    }
+    
+    .toggle-option label {
+        width: 100%;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .wizard-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .wizard-buttons button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .service-actions {
+        flex-direction: column;
+    }
+    
+    .service-header {
+        padding: 1.25rem;
+    }
+    
+    .service-body {
+        padding: 1.25rem;
+    }
+    
+    .service-price {
+        font-size: 1.75rem;
+    }
+    
+    .service-header h3 {
+        font-size: 1.1rem;
+    }
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    color: #333;
+    margin: auto;
+    padding: 25px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #DC2626; /* RED TV Red */
+}
+
+.modal-content p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.modal-content .btn {
+    margin-top: 1rem;
+}
+
+/* Styles for Form-based Modal (Contratación Modal) */
+.form-modal-content .form-group {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.form-modal-content label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-modal-content .form-control,
+.form-modal-content .form-control-display {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.form-modal-content .form-control-display {
+    background-color: #f8f9fa;
+    color: #495057;
+    cursor: default;
+}
+
+.form-modal-content .form-control:focus {
+    border-color: var(--primary-red);
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.25); /* Match primary red */
+}
+
+.form-modal-content .btn-full-width {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+}
+
+/* Form Buttons */
+.form-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: flex-end;
+}
+
+.form-buttons .btn {
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    min-width: 120px;
+}
+
+.form-buttons .btn-primary {
+    background-color: var(--primary-red);
+    color: var(--primary-white);
+}
+
+.form-buttons .btn-primary:hover {
+    background-color: #cc0000;
+}
+
+.form-buttons .btn-secondary {
+    background-color: #6c757d;
+    color: var(--primary-white);
+}
+
+.form-buttons .btn-secondary:hover {
+    background-color: #545b62;
+}
+
+@media (max-width: 480px) {
+    .form-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .form-buttons .btn {
+        width: 100%;
+    }
+} 

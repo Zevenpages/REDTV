@@ -1,0 +1,387 @@
+/* Coverage Map Page Styles */
+
+/* Page Title Customization */
+.page-title {
+    background-color: var(--color-primary-dark);
+}
+
+/* Map Filters */
+.map-filters {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.map-filters h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: var(--color-primary-dark);
+}
+
+.filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+}
+
+.filter-option input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.filter-option label {
+    font-weight: 500;
+    position: relative;
+    padding-left: 5px;
+    cursor: pointer;
+}
+
+.filter-option label.fiber::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #ff3d3d; /* Red for fiber */
+    margin-right: 8px;
+    border-radius: 2px;
+}
+
+.filter-option label.expansion::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #ffa03d; /* Orange for expansion */
+    margin-right: 8px;
+    border-radius: 2px;
+}
+
+.filter-option label.wireless::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #3d87ff; /* Blue for wireless */
+    margin-right: 8px;
+    border-radius: 2px;
+}
+
+/* Map Container */
+.map-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.chaco-map-container {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    height: 600px;
+    overflow: hidden;
+}
+
+.chaco-map-container svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* SVG Map Styling */
+#departamentos-chaco path {
+    fill: #f0f0f0;
+    stroke: #cccccc;
+    stroke-width: 1;
+    transition: fill 0.3s, stroke 0.3s;
+}
+
+#departamentos-chaco path:hover {
+    fill: #e0e0e0;
+    stroke: #999999;
+    stroke-width: 1.5;
+    cursor: pointer;
+}
+
+#departamentos-chaco path.fiber-coverage {
+    fill: rgba(255, 61, 61, 0.3);
+}
+
+#departamentos-chaco path.expansion {
+    fill: rgba(255, 160, 61, 0.3);
+}
+
+#departamentos-chaco path.wireless {
+    fill: rgba(61, 135, 255, 0.3);
+}
+
+#departamentos-chaco path.selected {
+    fill: rgba(255, 61, 61, 0.7);
+    stroke: #e00000;
+    stroke-width: 2;
+}
+
+/* Map Info Panel */
+.map-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.map-hover-info {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.map-hover-info h4 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 10px;
+}
+
+.map-hover-info p {
+    margin: 0 0 10px 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.map-hover-info .coverage-details {
+    margin-top: 15px;
+}
+
+.map-hover-info .coverage-details span {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.locality-list {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    flex-grow: 1;
+}
+
+.locality-list h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 15px;
+}
+
+.localities-with-service {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.locality-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.locality-item:last-child {
+    border-bottom: none;
+}
+
+.locality-item .locality-name {
+    flex-grow: 1;
+    font-weight: 500;
+}
+
+.locality-item .service-icons {
+    display: flex;
+    gap: 5px;
+}
+
+.service-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+.service-icon.fiber {
+    background-color: #ff3d3d;
+}
+
+.service-icon.expansion {
+    background-color: #ffa03d;
+}
+
+.service-icon.wireless {
+    background-color: #3d87ff;
+}
+
+/* FAQ Accordion */
+.coverage-faq {
+    margin-bottom: 60px;
+}
+
+.accordion {
+    margin-top: 30px;
+}
+
+.accordion-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.accordion-header {
+    background-color: #f9f9f9;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.accordion-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--color-text);
+}
+
+.accordion-header .material-icons {
+    transition: transform 0.3s;
+}
+
+.accordion-item.active .accordion-header .material-icons {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+}
+
+.accordion-item.active .accordion-content {
+    padding: 20px;
+    max-height: 500px;
+}
+
+.accordion-content p {
+    margin-top: 0;
+    line-height: 1.6;
+}
+
+.accordion-content ul {
+    margin-bottom: 15px;
+}
+
+.accordion-content li {
+    margin-bottom: 8px;
+}
+
+/* CTA Section */
+.coverage-cta {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 50px 0;
+    margin-bottom: 60px;
+    border-radius: 8px;
+}
+
+.cta-content {
+    text-align: center;
+}
+
+.cta-content h2 {
+    font-size: 2rem;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.cta-content p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.coverage-cta .btn {
+    font-size: 1.1rem;
+    padding: 12px 25px;
+}
+
+/* Map Tooltip */
+.map-tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .map-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .chaco-map-container {
+        height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-options {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .chaco-map-container {
+        height: 400px;
+    }
+}
+
+@media (max-width: 576px) {
+    .chaco-map-container {
+        height: 350px;
+        padding: 10px;
+    }
+    
+    .map-filters {
+        padding: 15px;
+    }
+    
+    .map-info > div {
+        padding: 15px;
+    }
+    
+    .accordion-header h3 {
+        font-size: 1rem;
+    }
+    
+    .coverage-cta {
+        padding: 30px 0;
+    }
+    
+    .cta-content h2 {
+        font-size: 1.5rem;
+    }
+} 

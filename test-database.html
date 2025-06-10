@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Supabase Database</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .button.success {
+            background: #28a745;
+        }
+        .button.warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        .button.danger {
+            background: #dc3545;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .plan-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            background: white;
+        }
+        .plan-card h3 {
+            margin: 0 0 10px 0;
+            color: #007bff;
+        }
+        .plan-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #28a745;
+            margin: 10px 0;
+        }
+        .plan-features {
+            list-style: none;
+            padding: 0;
+        }
+        .plan-features li {
+            padding: 5px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Supabase Database Test</h1>
+        <p>Use this page to test your Supabase database connection and functionality.</p>
+        
+        <div id="status" class="status warning">
+            ⚠️ Make sure to update your Supabase credentials in <code>js/config.js</code> before testing!
+        </div>
+        
+        <div>
+            <button class="button" onclick="testConnection()">🔌 Test Connection</button>
+            <button class="button success" onclick="seedDatabase()">🌱 Seed Database</button>
+            <button class="button" onclick="loadPlans()">📋 Load Plans</button>
+            <button class="button" onclick="loadLocalities()">📍 Load Localities</button>
+            <button class="button danger" onclick="clearLog()">🧹 Clear Log</button>
+        </div>
+        
+        <div id="log" class="log">Ready to test database connection...\n</div>
+    </div>
+    
+    <div class="container">
+        <h2>📋 Plans</h2>
+        <div id="plans-container">
+            <p>Click "Load Plans" to see available plans from the database.</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>📍 Localities & Zone Types</h2>
+        <div id="localities-container">
+            <p>Click "Load Localities" to see available localities and zone types.</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { testDatabaseConnection, seedDatabase as runSeedDatabase } from './js/seed-data.js';
+        import { DatabaseService } from './js/supabase.js';
+        
+        // Make functions available globally for button clicks
+        window.testConnection = testConnection;
+        window.seedDatabase = seedDatabase;
+        window.loadPlans = loadPlans;
+        window.loadLocalities = loadLocalities;
+        window.clearLog = clearLog;
+        
+        const logElement = document.getElementById('log');
+        const statusElement = document.getElementById('status');
+        
+        function log(message) {
+            logElement.textContent += new Date().toLocaleTimeString() + ' - ' + message + '\n';
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        function setStatus(message, type = 'warning') {
+            statusElement.textContent = message;
+            statusElement.className = `status ${type}`;
+        }
+        
+        async function testConnection() {
+            log('🔌 Testing database connection...');
+            try {
+                const result = await testDatabaseConnection();
+                if (result) {
+                    setStatus('✅ Database connection successful!', 'success');
+                    log('✅ Database connection test passed!');
+                } else {
+                    setStatus('❌ Database connection failed!', 'error');
+                    log('❌ Database connection test failed!');
+                }
+            } catch (error) {
+                setStatus('❌ Database connection error: ' + error.message, 'error');
+                log('❌ Error: ' + error.message);
+            }
+        }
+        
+        async function seedDatabase() {
+            log('🌱 Starting database seeding...');
+            try {
+                const result = await runSeedDatabase();
+                setStatus('✅ Database seeded successfully!', 'success');
+                log('✅ Database seeding completed!');
+                log(`Created ${result.localities.length} localities, ${result.zoneTypes.length} zone types, and ${result.plans.length} plans`);
+            } catch (error) {
+                setStatus('❌ Database seeding failed: ' + error.message, 'error');
+                log('❌ Seeding error: ' + error.message);
+            }
+        }
+        
+        async function loadPlans() {
+            log('📋 Loading plans from database...');
+            try {
+                const plans = await DatabaseService.getPlansWithFeatures();
+                log(`✅ Loaded ${plans.length} plans`);
+                
+                const container = document.getElementById('plans-container');
+                if (plans.length === 0) {
+                    container.innerHTML = '<p>No plans found. Try seeding the database first.</p>';
+                    return;
+                }
+                
+                container.innerHTML = '<div class="plans-grid">' + 
+                    plans.map(plan => `
+                        <div class="plan-card">
+                            <h3>${plan.name}</h3>
+                            <div class="plan-price">$${plan.price.toLocaleString()}</div>
+                            <p><strong>Category:</strong> ${plan.plan_category}</p>
+                            <ul class="plan-features">
+                                ${plan.features.map(feature => `
+                                    <li>🔹 ${feature.description}</li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    `).join('') + 
+                '</div>';
+                
+            } catch (error) {
+                log('❌ Error loading plans: ' + error.message);
+                document.getElementById('plans-container').innerHTML = 
+                    '<p class="status error">Error loading plans: ' + error.message + '</p>';
+            }
+        }
+        
+        async function loadLocalities() {
+            log('📍 Loading localities and zone types...');
+            try {
+                const [localities, zoneTypes] = await Promise.all([
+                    DatabaseService.getLocalities(),
+                    DatabaseService.getZoneTypes()
+                ]);
+                
+                log(`✅ Loaded ${localities.length} localities and ${zoneTypes.length} zone types`);
+                
+                const container = document.getElementById('localities-container');
+                container.innerHTML = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <h3>Localities</h3>
+                            <ul>
+                                ${localities.map(locality => `<li>${locality.name}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Zone Types</h3>
+                            <ul>
+                                ${zoneTypes.map(zoneType => `<li>${zoneType.name}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                log('❌ Error loading localities: ' + error.message);
+                document.getElementById('localities-container').innerHTML = 
+                    '<p class="status error">Error loading data: ' + error.message + '</p>';
+            }
+        }
+        
+        function clearLog() {
+            logElement.textContent = 'Log cleared...\n';
+        }
+        
+        // Auto-test connection on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            log('Page loaded. Ready to test database connection.');
+        });
+    </script>
+</body>
+</html> 

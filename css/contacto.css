@@ -1,0 +1,259 @@
+/* Contact Page Styles */
+
+/* Page Title Customization */
+.page-title {
+    background-color: var(--primary-dark);
+    color: var(--primary-white);
+    padding: 3rem 0;
+    text-align: center;
+}
+
+/* Contact Info Section */
+.contact-info {
+    padding: 4rem 0;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.contact-details h2 {
+    color: var(--primary-red);
+    margin-bottom: 0.5rem;
+}
+
+.contact-details h3 {
+    font-size: 1.3rem;
+    color: var(--primary-dark);
+    margin-bottom: 2rem;
+}
+
+.contact-locations {
+    margin-bottom: 2rem;
+}
+
+.contact-location {
+    margin-bottom: 1rem;
+}
+
+.contact-location h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.contact-methods {
+    margin-top: 2rem;
+}
+
+.contact-methods p {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.contact-methods .material-icons {
+    color: var(--primary-red);
+    margin-right: 0.5rem;
+}
+
+.email-toggle-contact {
+    margin-top: 2rem;
+}
+
+.email-toggle-contact .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.email-toggle-contact .btn .material-icons {
+    font-size: 1.1rem;
+    color: var(--primary-white);
+    line-height: 1;
+}
+
+.contact-image img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Contact Form Section */
+.contact-form-section {
+    padding: 4rem 0;
+    background-color: var(--light-gray);
+}
+
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--primary-white);
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.form-notice {
+    text-align: center;
+    color: var(--dark-gray);
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--medium-gray);
+    border-radius: 4px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--primary-red);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.1);
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-group input {
+    width: auto;
+    margin-right: 0.5rem;
+}
+
+.checkbox-group label {
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.form-actions .btn {
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+}
+
+/* Form Messages */
+.form-message {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 1rem;
+}
+
+.form-message.loading {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+.form-message.success {
+    background-color: #f0fff0;
+    border: 1px solid #80c080;
+    border-radius: 8px;
+    padding: 2rem;
+}
+
+.form-message.success h3 {
+    color: #008000;
+    margin-bottom: 1rem;
+}
+
+.form-message.success button {
+    margin-top: 1.5rem;
+}
+
+/* Email Form Wrapper */
+.email-form-wrapper {
+    margin-top: 2rem;
+    padding: 2rem;
+    border: 1px solid var(--medium-gray);
+    border-radius: 8px;
+    background-color: #fafafa;
+    transition: all 0.3s ease;
+}
+
+.email-form-wrapper.show {
+    display: block !important;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .contact-image {
+        order: -1;
+        text-align: center;
+    }
+    
+    .contact-image img {
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-title {
+        padding: 2rem 0;
+    }
+    
+    .contact-info,
+    .contact-form-section {
+        padding: 3rem 0;
+    }
+    
+    .form-container {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .form-container {
+        padding: 1.5rem;
+    }
+} 

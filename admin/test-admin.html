@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Admin Database - RED TV</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .button.success {
+            background: #28a745;
+        }
+        .button.danger {
+            background: #dc3545;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Admin Database Service</h1>
+        <p>This page tests the admin database functionality.</p>
+        
+        <div id="status" class="status error">
+            ⚠️ Initializing...
+        </div>
+        
+        <div>
+            <button class="button" onclick="testConnection()">🔌 Test Connection</button>
+            <button class="button success" onclick="testCreatePlan()">➕ Test Create Plan</button>
+            <button class="button" onclick="testLoadPlans()">📋 Test Load Plans</button>
+            <button class="button danger" onclick="clearLog()">🧹 Clear Log</button>
+        </div>
+        
+        <div id="log" class="log">Initializing admin database service...\n</div>
+    </div>
+
+    <!-- Load Supabase from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script type="module">
+        import { AdminDatabaseService } from './js/admin-database.js';
+        import { initSupabase } from './js/supabase-cdn.js';
+        
+        const logElement = document.getElementById('log');
+        const statusElement = document.getElementById('status');
+        
+        function log(message) {
+            logElement.textContent += new Date().toLocaleTimeString() + ' - ' + message + '\n';
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        function setStatus(message, type = 'error') {
+            statusElement.textContent = message;
+            statusElement.className = `status ${type}`;
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                log('🔄 Initializing Supabase client...');
+                await initSupabase();
+                log('✅ Supabase client initialized successfully!');
+                setStatus('✅ Ready to test! Admin database service loaded.', 'success');
+            } catch (error) {
+                log('❌ Failed to initialize Supabase: ' + error.message);
+                setStatus('❌ Initialization failed: ' + error.message, 'error');
+            }
+        });
+        
+        // Test connection
+        async function testConnection() {
+            log('🔌 Testing admin database connection...');
+            try {
+                const [localities, zoneTypes, plans] = await Promise.all([
+                    AdminDatabaseService.getLocalities(),
+                    AdminDatabaseService.getZoneTypes(),
+                    AdminDatabaseService.getPlans()
+                ]);
+                
+                log(`✅ Connection successful!`);
+                log(`   - Found ${localities.length} localities`);
+                log(`   - Found ${zoneTypes.length} zone types`);
+                log(`   - Found ${plans.length} plans`);
+                setStatus('✅ Database connection successful!', 'success');
+            } catch (error) {
+                log('❌ Connection failed: ' + error.message);
+                setStatus('❌ Database connection failed!', 'error');
+            }
+        }
+        
+        // Test create plan
+        async function testCreatePlan() {
+            log('➕ Testing plan creation...');
+            try {
+                const testPlan = {
+                    name: 'Test Plan ' + Date.now(),
+                    category: 'internet',
+                    price: 15000,
+                    features: [
+                        { description: 'Test Feature 1', icon: 'speed' },
+                        { description: 'Test Feature 2', icon: 'wifi' }
+                    ],
+                    availability: []
+                };
+                
+                // Get some availability options
+                const [localities, zoneTypes] = await Promise.all([
+                    AdminDatabaseService.getLocalities(),
+                    AdminDatabaseService.getZoneTypes()
+                ]);
+                
+                if (localities.length > 0 && zoneTypes.length > 0) {
+                    testPlan.availability = [
+                        {
+                            localityId: localities[0].id,
+                            zoneTypeId: zoneTypes[0].id
+                        }
+                    ];
+                }
+                
+                const result = await AdminDatabaseService.createPlanWithFeatures(testPlan);
+                log(`✅ Plan created successfully!`);
+                log(`   - Plan ID: ${result.id}`);
+                log(`   - Plan Name: ${result.name}`);
+                log(`   - Features: ${testPlan.features.length}`);
+                log(`   - Availability: ${testPlan.availability.length} locations`);
+                
+                setStatus('✅ Plan creation successful!', 'success');
+            } catch (error) {
+                log('❌ Plan creation failed: ' + error.message);
+                setStatus('❌ Plan creation failed!', 'error');
+            }
+        }
+        
+        // Test load plans
+        async function testLoadPlans() {
+            log('📋 Testing plan loading...');
+            try {
+                const plans = await AdminDatabaseService.getPlansWithFeatures();
+                log(`✅ Plans loaded successfully!`);
+                log(`   - Total plans: ${plans.length}`);
+                
+                plans.forEach((plan, index) => {
+                    log(`   ${index + 1}. ${plan.name} ($${plan.price}) - ${plan.features?.length || 0} features`);
+                });
+                
+                setStatus('✅ Plan loading successful!', 'success');
+            } catch (error) {
+                log('❌ Plan loading failed: ' + error.message);
+                setStatus('❌ Plan loading failed!', 'error');
+            }
+        }
+        
+        // Clear log
+        function clearLog() {
+            logElement.textContent = 'Log cleared...\n';
+        }
+        
+        // Make functions available globally
+        window.testConnection = testConnection;
+        window.testCreatePlan = testCreatePlan;
+        window.testLoadPlans = testLoadPlans;
+        window.clearLog = clearLog;
+    </script>
+</body>
+</html> 

@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Televisión</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/favicon.svg" type="image/svg+xml">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+        }
+        
+        .btn-primary {
+            background-color: #DC2626;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #B91C1C;
+        }
+        
+        .btn-outline {
+            border: 2px solid white;
+            color: white;
+            background-color: transparent;
+        }
+        
+        .btn-outline:hover {
+            background-color: white;
+            color: black;
+        }
+        
+        .btn-outline-white {
+            border: 2px solid white;
+            color: white;
+            background-color: transparent;
+        }
+        
+        .btn-outline-white:hover {
+            background-color: white;
+            color: #DC2626;
+        }
+        
+        /* Override global header styles for proper button styling */
+        .customer-access .btn-secondary {
+            background-color: transparent;
+            color: #FF0000;
+            border: 2px solid #FF0000;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .customer-access .btn-secondary:hover {
+            background-color: #ffeeee;
+            color: #FF0000;
+        }
+        
+        /* Hero Section - Back to centered */
+        .hero {
+            position: relative;
+            background: linear-gradient(135deg, #8B0000 0%, #1A1A1A 100%);
+            color: white;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            text-align: center; /* Centered again */
+        }
+        
+        .hero .container {
+            display: flex;
+            justify-content: center; /* Center content */
+            width: 100%;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            padding: 5rem 0;
+            max-width: 50rem;
+            width: 100%;
+            text-align: center; /* Centered */
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.025em;
+            text-align: center; /* Centered */
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            text-align: center; /* Centered */
+        }
+        
+        .hero-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            justify-content: center; /* Center buttons */
+            align-items: center; /* Center buttons */
+        }
+        
+        /* Stats Section */
+        .stats {
+            background-color: #DC2626;
+            color: white;
+            padding: 2rem 0;
+        }
+        
+        .stats-grid {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .stat-icon {
+            width: 4rem;
+            height: 4rem;
+            font-size: 4rem;
+        }
+        
+        .stat-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        
+        .stat-number {
+            font-size: 1.875rem;
+            font-weight: 700;
+            line-height: 1;
+            margin: 0;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            opacity: 0.9;
+            margin: 1px 0 0 4px;
+            line-height: 1.2;
+        }
+        
+        .stat-divider {
+            display: none;
+            width: 1px;
+            height: 3rem;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Coverage Section */
+        .coverage {
+            padding: 4rem 0;
+            background-color: #111827;
+            color: white;
+        }
+        
+        .coverage-grid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .coverage-content {
+            text-align: center;
+            width: 100%;
+        }
+        
+        .coverage-content h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .coverage-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        /* Coverage Search Box - Improved contrast */
+        .coverage-search {
+            max-width: 500px;
+            margin: 2rem auto;
+            position: relative;
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 3px solid #ffffff; /* White border for better contrast */
+            border-radius: 0.5rem;
+            background-color: #ffffff; /* White background */
+            color: #111827; /* Dark text */
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #DC2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+        }
+        
+        .search-input::placeholder {
+            color: #6B7280; /* Darker placeholder for better contrast */
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6B7280;
+        }
+        
+        /* Autocomplete Dropdown */
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: #ffffff;
+            border: 2px solid #DC2626;
+            border-top: none;
+            border-radius: 0 0 0.5rem 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .autocomplete-dropdown.show {
+            display: block;
+        }
+        
+        .autocomplete-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            color: #111827;
+            border-bottom: 1px solid #E5E7EB;
+            transition: background-color 0.2s ease;
+        }
+        
+        .autocomplete-item:hover,
+        .autocomplete-item.highlighted {
+            background-color: #F3F4F6;
+        }
+        
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Coverage Results */
+        .coverage-result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            display: none;
+        }
+        
+        .coverage-result.show {
+            display: block;
+        }
+        
+        .coverage-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .coverage-badge.yes {
+            background-color: #059669;
+            color: white;
+        }
+        
+        .coverage-badge.coming-soon {
+            background-color: #F59E0B;
+            color: white;
+        }
+        
+        .coverage-badge.no {
+            background-color: #DC2626;
+            color: white;
+        }
+        
+        .coverage-message {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .plans-button {
+            background-color: #DC2626;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .plans-button:hover {
+            background-color: #B91C1C;
+            color: white;
+        }
+        
+        .coverage-image {
+            position: relative;
+            height: 25rem;
+            width: 100%;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: none !important; /* Remove any borders */
+            box-shadow: none !important; /* Remove any shadows */
+            filter: none !important; /* Remove any filters */
+            background: transparent !important; /* Transparent background */
+        }
+        
+        .coverage-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border: none !important; /* Remove any borders */
+            box-shadow: none !important; /* Remove any shadows */
+            filter: none !important; /* Remove any filters */
+            background: transparent !important; /* Transparent background */
+        }
+                /* SVG Map Styling - Aggressive Red Test */
+        .coverage-image svg {
+            background: transparent !important;
+            width: 100%; 
+            height: auto; /* Maintain aspect ratio, or set a fixed height like max-height below */
+            max-height: 400px; /* Example max height */
+        }
+
+        /* STEP 1: Make ALL paths RED by default. */
+        .coverage-image svg path {
+            fill: #DC2626 !important;     /* RED TV red */
+            stroke: #B91C1C !important;   /* Darker red stroke for all paths initially */
+            stroke-width: 0.5px !important; /* Thin stroke for all paths initially */
+        }
+
+        /* STEP 2: Correct map lines. These should have NO FILL and BLACK STROKE. */
+        /* This targets paths that have 'fill:none' and a 'stroke' in their inline style */
+        .coverage-image svg path[style*="fill:none"][style*="stroke"] {
+            fill: none !important;
+            stroke: #000000 !important;       /* Black stroke for lines */
+            stroke-width: 0.75px !important;  /* Make lines clearly visible */
+        }
+        
+        /* Also catch paths that might just have fill:none and rely on default stroke, or have specific rgb(0,0,0) stroke */
+        .coverage-image svg g[clip-path] > path[style*="fill:none"][style*="stroke:rgb(0%,0%,0%)"],
+        .coverage-image svg g[clip-path] > path[style*="fill:none"][style*="stroke:rgb(0,0,0)"] {
+            fill: none !important;
+            stroke: #000000 !important; 
+            stroke-width: 0.75px !important;
+        }
+
+
+        /* STEP 3: Ensure any explicitly transparent-intended background paths are indeed transparent. */
+        /* This might catch 'canvas' like paths if they were caught by STEP 1's red fill. */
+        .coverage-image svg g#surface1 > path[style*="fill:rgb(49.803162%,49.803162%,49.803162%)"],
+        .coverage-image svg g#patch_1 path, 
+        .coverage-image svg g#patch_2 path {
+            fill: transparent !important;
+            stroke: none !important;
+        }
+        
+        /* Remove all map animations, transitions, borders, shadows and hovers - Comprehensive */
+        .coverage-image,
+        .coverage-image *,
+        .coverage-image svg,
+        .coverage-image svg *,
+        .coverage-image img,
+        #departamentos-chaco,
+        #departamentos-chaco *,
+        #departamentos-chaco path,
+        #departamentos-chaco g,
+        #departamentos-chaco circle,
+        #departamentos-chaco rect,
+        #departamentos-chaco polygon,
+        svg[id*="chaco"],
+        svg[id*="chaco"] *,
+        svg[id*="chaco"] path,
+        svg[id*="chaco"] g {
+            transition: none !important;
+            animation: none !important;
+            transform: none !important;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            filter: none !important;
+            -webkit-filter: none !important;
+            text-shadow: none !important;
+            drop-shadow: none !important;
+        }
+        
+        .coverage-image:hover,
+        .coverage-image *:hover,
+        .coverage-image svg:hover,
+        .coverage-image svg *:hover,
+        .coverage-image img:hover,
+        #departamentos-chaco:hover,
+        #departamentos-chaco *:hover,
+        #departamentos-chaco path:hover,
+        #departamentos-chaco g:hover,
+        #departamentos-chaco circle:hover,
+        #departamentos-chaco rect:hover,
+        #departamentos-chaco polygon:hover,
+        svg[id*="chaco"]:hover,
+        svg[id*="chaco"] *:hover,
+        svg[id*="chaco"] path:hover,
+        svg[id*="chaco"] g:hover {
+            transition: none !important;
+            animation: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+            filter: none !important;
+            -webkit-filter: none !important;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            text-shadow: none !important;
+            drop-shadow: none !important;
+            cursor: default !important;
+            /* Maintain the color scheme on hover */
+            fill: inherit !important;
+            stroke: inherit !important;
+        }
+        
+        /* Override any global styles that might affect the map - including shadows */
+        .coverage-image *,
+        .coverage-image *:hover,
+        .coverage-image *:focus,
+        .coverage-image *:active {
+            transition: none !important;
+            animation: none !important;
+            transform: none !important;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            filter: none !important;
+            -webkit-filter: none !important;
+            text-shadow: none !important;
+            drop-shadow: none !important;
+        }
+        
+        /* App Promo Section */
+        .app-promo {
+            padding: 4rem 0;
+            background-color: #DC2626;
+            color: white;
+        }
+        
+        .app-promo-grid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .app-image {
+            position: relative;
+            height: 20rem;
+            width: 100%;
+        }
+        
+        .app-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .app-content {
+            text-align: center;
+        }
+        
+        .app-content h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .app-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .app-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        /* WhatsApp Button */
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #25D366;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .whatsapp-button img {
+            width: 50px;
+            height: 50px;
+        }
+        
+        /* Responsive Design */
+        @media (min-width: 640px) {
+            .hero-buttons {
+                flex-direction: row;
+            }
+            
+            .app-buttons {
+                flex-direction: row;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .hero p {
+                font-size: 1.5rem;
+            }
+            
+            .stats-grid {
+                flex-direction: row;
+            }
+            
+            .stat-divider {
+                display: block;
+            }
+            
+            .coverage-grid {
+                flex-direction: row;
+            }
+            
+            .coverage-content {
+                flex: 1;
+                text-align: left;
+            }
+            
+            .coverage-search {
+                margin: 2rem 0;
+            }
+            
+            .coverage-image {
+                flex: 1;
+                height: 30rem;
+            }
+            
+            .app-promo-grid {
+                flex-direction: row;
+            }
+            
+            .app-image {
+                flex: 1;
+            }
+            
+            .app-content {
+                flex: 1;
+                text-align: left;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .hero h1 {
+                font-size: 3.75rem;
+            }
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 4rem 0;
+            background-color: #111827;
+            color: white;
+        }
+        
+        .faq-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .faq-content h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: white;
+        }
+        
+        .faq-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            text-align: left;
+        }
+        
+        .faq-item {
+            background-color: #1F2937;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            background-color: #374151;
+        }
+        
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+            color: white;
+            flex: 1;
+            padding-right: 1rem;
+        }
+        
+        .faq-question .material-icons {
+            font-size: 1.5rem;
+            color: #DC2626;
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-item.active .faq-question .material-icons {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+            max-height: 300px;
+        }
+        
+        .faq-answer p {
+            margin: 0;
+            line-height: 1.6;
+            color: #D1D5DB;
+            font-size: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .faq-content h2 {
+                font-size: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            
+            .faq-question {
+                padding: 1.25rem;
+            }
+            
+            .faq-question h3 {
+                font-size: 1rem;
+            }
+            
+            .faq-item.active .faq-answer {
+                padding: 0 1.25rem 1.25rem 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header"></header>
+
+    <main class="flex-1">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Red Televisión</h1>
+                    <p>Liderando la innovación en conectividad y entretenimiento digital</p>
+                    <div class="hero-buttons">
+                        <a href="planes.html" class="btn btn-lg btn-primary">
+                            Ver Planes
+                        </a>
+                        <a href="#coverage" class="btn btn-lg btn-outline">
+                            Verificá tu Cobertura
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="material-icons stat-icon">home</span>
+                        <div class="stat-text">
+                            <p class="stat-number">+25.000</p>
+                            <p class="stat-label">Hogares Conectados</p>
+                        </div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="material-icons stat-icon">wifi</span>
+                        <div class="stat-text">
+                            <p class="stat-number">+80%</p>
+                            <p class="stat-label">Redes con Tecnología de Fibra Óptica</p>
+                        </div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="material-icons stat-icon">dns</span>
+                        <div class="stat-text">
+                            <p class="stat-number">Infraestructura</p>
+                            <p class="stat-label">Centro de Datos propio, con energía renovable</p>
+                        </div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="material-icons stat-icon">tv</span>
+                        <div class="stat-text">
+                            <p class="stat-number">Líder</p>
+                            <p class="stat-label"> en Servicios de Internet y Televisión Digital</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Coverage Section -->
+        <section id="coverage" class="coverage">
+            <div class="container">
+                <div class="coverage-grid">
+                    <div class="coverage-content">
+                        <h2>Conocé nuestra cobertura en detalle</h2>
+                        <p>
+                            Estamos expandiendo nuestra red constantemente para llegar a más hogares en la región del Chaco.
+                            Verificá si tu domicilio está dentro de nuestra área de servicio.
+                        </p>
+                        
+                        <!-- Coverage Search -->
+                        <div class="coverage-search">
+                            <div class="search-container">
+                                <input 
+                                    type="text" 
+                                    id="locationSearch" 
+                                    class="search-input" 
+                                    placeholder="Ingresá tu localidad (ej: Resistencia, Charata, etc.)"
+                                    autocomplete="off"
+                                >
+                                <span class="material-icons search-icon">search</span>
+                                <div id="autocompleteDropdown" class="autocomplete-dropdown"></div>
+                            </div>
+                            
+                            <!-- Coverage Results -->
+                            <div id="coverageResult" class="coverage-result">
+                                <div id="coverageBadge" class="coverage-badge">
+                                    <span class="material-icons">check_circle</span>
+                                    <span id="badgeText">Checking...</span>
+                                </div>
+                                <p id="coverageMessage" class="coverage-message">
+                                    Verificando disponibilidad...
+                                </p>
+                                <a href="planes.html" id="plansButton" class="plans-button" style="display: none;">
+                                    Ver planes disponibles
+                                    <span class="material-icons">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="coverage-image">
+                        <img src="localidades-chaco.svg" alt="Mapa de cobertura" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- App Promo Section -->
+        <section class="app-promo">
+            <div class="container">
+                <div class="app-promo-grid">
+                    <div class="app-image">
+                        <img src="New Product Launch.svg" alt="RED TV Play" />
+                    </div>
+                    <div class="app-content">
+                        <h2>REDTV Play</h2>
+                        <p>
+                            Descargá nuestra app de entretenimiento digital y úsala desde donde quieras. Mirá tus canales favoritos, contenido on-demand y más desde cualquier dispositivo.
+                        </p>
+                        <div class="app-buttons">
+                            <a href="#" class="btn btn-lg btn-outline-white">
+                                Descargar para Android
+                            </a>
+                            <a href="#" class="btn btn-lg btn-outline-white">
+                                Descargar para iOS
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq">
+            <div class="container">
+                <div class="faq-content">
+                    <h2>Preguntas Frecuentes</h2>
+                    <div class="faq-grid">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>¿Cómo puedo contratar un servicio?</h3>
+                                <span class="material-icons">expand_more</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Podés hacerlo a través de la web, acercándote a cualquiera de nuestras sucursales o comunicándote telefónicamente.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>¿Puedo cambiar mi pack?</h3>
+                                <span class="material-icons">expand_more</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Sí, tenemos promociones de actualización exclusivas para nuestros clientes. Para alta o bajas utilizar nuestros canales de contacto.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>¿Cuánto sale el Derecho de Conexión?</h3>
+                                <span class="material-icons">expand_more</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Los costos varían según el pack/producto seleccionado, y el medio de pago seleccionado.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>¿Cuánto dura un pack en promoción?</h3>
+                                <span class="material-icons">expand_more</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>La duración de nuestras promociones, varían dependiendo si el cliente se adhiere o no al débito automático entre otros. Para otros productos o servicios, verifique el plazo de promoción indicado.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>¿Servicio de posventa, actualización de servicios, problemas técnicos?</h3>
+                                <span class="material-icons">expand_more</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Podrá contactarse a través de Whatsapp, Facebook, via mail, por teléfono o acercándose a una de nuestras sucursales.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>¿Cuánto sale cada boca de TV adicional?</h3>
+                                <span class="material-icons">expand_more</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>El servicio de TV incluye hasta 2 bocas adicionales básicas si se solicitan al momento del alta. A partir de la tercera, o cualquier boca adicional solicitada posteriormente a la instalación principal, tiene un costo extra (consultar en Atención al Cliente). Las bocas adicionales no incluyen decodificadores, los cuales deberán ser pedidos por separado abonando los costos correspondientes a dicho servicio.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <h3>¿Cómo es el servicio Digital HD?</h3>
+                                <span class="material-icons">expand_more</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Disfrute de todas las señales digitales en High-Definition (HD). Brindamos el servicio con un decodificador (STB) y control remoto en comodato, para ver todos los canales. Además tiene la posibilidad de ver los últimos estrenos de películas para toda la familia, series en tendencia y programación para adultos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer"></footer>
+
+    <!-- WhatsApp Sticky Button -->
+    <a href="https://api.whatsapp.com/send?phone=543794069046&text=Hola%20%F0%9F%91%8B%0A%0AVengo%20de%20la%20p%C3%A1gina%20de%20Red%20TV%2C%20quiero%20obtener%20m%C3%A1s%20informaci%C3%B3n%20sobre%3A%20" class="whatsapp-button" target="_blank">
+        <img src="WhatsApp.svg" alt="WhatsApp">
+    </a>
+
+    <script src="js/header.js"></script>
+    <script src="js/footer.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        // Coverage Search Functionality with Autocomplete
+        const chacoLocalities = [
+            'Pampa del Infierno', 'Concepción del Bermejo', 'Los Frentones', 'Taco Pozo', 'Río Muerto', 
+            'La Leonesa', 'General Vedia', 'Las Palmas', 'Isla del Cerrito', 'Puerto Bermejo', 
+            'Puerto Eva Perón', 'Charata', 'Presidencia Roque Sáenz Peña', 'General Pinedo', 'Gancedo', 
+            'General Capdevila', 'Mesón de Fierro', 'Pampa Landriel', 'Hermoso Campo', 'Itín', 
+            'Santa Sylvina', 'Chorotis', 'Venados Grandes', 'Corzuela', 'Makallé', 'La Escondida', 
+            'La Verde', 'Lapachito', 'Juan José Castelli', 'El Sauzalito', 'Fuerte Esperanza', 
+            'Miraflores', 'Misión Nueva Pompeya', 'Villa Río Bermejito', 'El Espinillo', 'El Sauzal', 
+            'Fortín Lavalle', 'Wichí', 'Zaparinqui', 'Campo Largo', 'Avia Terai', 'Napenay', 
+            'Fortín Las Chuñas', 'Puerto Tirol', 'Colonia Popular', 'Laguna Blanca', 'Colonia Baranda', 
+            'Estación General Obligado', 'General José de San Martín', 'Ciervo Petiso', 'La Eduvigis', 
+            'Laguna Limpia', 'Pampa Almirón', 'Pampa del Indio', 'Presidencia Roca', 'Selvas del Río de Oro', 
+            'Tres Isletas', 'Villa Ángela', 'Coronel Du Graty', 'Enrique Urién', 'Las Breñas', 
+            'San Bernardo', 'La Clotilde', 'La Tigra', 'Presidencia de la Plaza', 'Margarita Belén', 
+            'Colonia Benítez', 'Barrio de los Pescadores', 'Quitilipi', 'Villa El Palmar', 'Resistencia', 
+            'Barranqueras', 'Fontana', 'Puerto Vilelas', 'Basail', 'Villa Berthet', 'Samuhú', 
+            'Colonia Elisa', 'Capitán Solari', 'Colonias Unidas', 'Las Garcitas', 'Ingeniero Barbet', 
+            'Charadai', 'Cote Lai', 'Haumonía', 'Horquilla', 'La Sabana', 'Machagai', 'Colonia Aborigen', 'Napalpí',
+            'Tres Mojones', 'Cabeza de Tigre', 'Colonia Jacaranda' // Added new localities
+        ];
+        
+        // Updated coverage data
+        const coverageData = {
+            // YES - Available (New list)
+            'Charata': 'yes',
+            'General Pinedo': 'yes',
+            'General Capdevila': 'yes',
+            'Hermoso Campo': 'yes',
+            'Itín': 'yes',
+            'Chorotis': 'yes',
+            'Venados Grandes': 'yes',
+            'Tres Mojones': 'yes',
+            'Cabeza de Tigre': 'yes',
+            'Colonia Jacaranda': 'yes',
+
+            // COMING SOON - Retained from previous list if not in the new "yes" list
+            'Puerto Tirol': 'coming-soon',
+            'Colonia Benítez': 'coming-soon',
+            'Gancedo': 'coming-soon', // Was 'coming-soon', not in new "yes" list
+            'Makallé': 'coming-soon',
+            'Santa Sylvina': 'coming-soon', // Was 'coming-soon', not in new "yes" list
+            'Tres Isletas': 'coming-soon',
+            'Juan José Castelli': 'coming-soon',
+            'General José de San Martín': 'coming-soon',
+            'Avia Terai': 'coming-soon',
+            'Las Palmas': 'coming-soon',
+            
+            // Example of a previously 'yes' location now implicitly 'no' as it's not in the new list:
+            // 'Resistencia': 'yes', // This will now be treated as 'no' by default logic
+        };
+        
+        const locationSearch = document.getElementById('locationSearch');
+        const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+        const coverageResult = document.getElementById('coverageResult');
+        const coverageBadge = document.getElementById('coverageBadge');
+        const badgeText = document.getElementById('badgeText');
+        const coverageMessage = document.getElementById('coverageMessage');
+        const plansButton = document.getElementById('plansButton');
+        
+        let currentHighlightIndex = -1;
+        let filteredLocalities = [];
+        
+        // Autocomplete functionality
+        locationSearch.addEventListener('input', function() {
+            const searchValue = this.value.trim();
+            
+            if (searchValue.length === 0) {
+                hideAutocomplete();
+                coverageResult.classList.remove('show');
+                return;
+            }
+            
+            // Filter localities based on search
+            filteredLocalities = chacoLocalities.filter(locality => 
+                locality.toLowerCase().includes(searchValue.toLowerCase())
+            );
+            
+            if (filteredLocalities.length > 0) {
+                showAutocomplete(filteredLocalities);
+            } else {
+                hideAutocomplete();
+            }
+            
+            // Check for exact match to immediately show result
+            const exactMatch = chacoLocalities.find(locality => 
+                locality.toLowerCase() === searchValue.toLowerCase()
+            );
+            
+            if (exactMatch) {
+                showCoverageResult(exactMatch);
+            } else {
+                // Only hide if no exact match AND no autocomplete items are showing or focused
+                // For simplicity, we'll let showCoverageResult handle showing, 
+                // and clearing input handle explicit hiding.
+                // If not an exact match, but autocomplete is showing, user might still select.
+                // If filteredLocalities is empty, autocomplete is hidden anyway.
+                // If no exact match, and autocomplete is also empty/hidden, 
+                // we don't want to prematurely hide a result that might have been set by selection.
+                // So, removing the explicit hide here.
+            }
+        });
+        
+        // Keyboard navigation
+        locationSearch.addEventListener('keydown', function(e) {
+            const items = autocompleteDropdown.querySelectorAll('.autocomplete-item');
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                currentHighlightIndex = Math.min(currentHighlightIndex + 1, items.length - 1);
+                updateHighlight(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                currentHighlightIndex = Math.max(currentHighlightIndex - 1, -1);
+                updateHighlight(items);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (currentHighlightIndex >= 0 && items[currentHighlightIndex]) {
+                    selectLocality(items[currentHighlightIndex].textContent);
+                }
+            } else if (e.key === 'Escape') {
+                hideAutocomplete();
+            }
+        });
+        
+        function showAutocomplete(localities) {
+            autocompleteDropdown.innerHTML = '';
+            currentHighlightIndex = -1;
+            
+            localities.slice(0, 8).forEach((locality, index) => {
+                const item = document.createElement('div');
+                item.className = 'autocomplete-item';
+                item.textContent = locality;
+                item.addEventListener('click', () => selectLocality(locality));
+                autocompleteDropdown.appendChild(item);
+            });
+            
+            autocompleteDropdown.classList.add('show');
+        }
+        
+        function hideAutocomplete() {
+            autocompleteDropdown.classList.remove('show');
+            currentHighlightIndex = -1;
+        }
+        
+        function updateHighlight(items) {
+            items.forEach((item, index) => {
+                item.classList.toggle('highlighted', index === currentHighlightIndex);
+            });
+        }
+        
+        function selectLocality(locality) {
+            locationSearch.value = locality;
+            hideAutocomplete();
+            showCoverageResult(locality);
+        }
+        
+        function showCoverageResult(locality) {
+            const status = coverageData[locality] || 'no';
+            
+            // Reset classes
+            coverageBadge.className = 'coverage-badge ' + status;
+            
+            // Update badge icon and text
+            const badgeIcon = coverageBadge.querySelector('.material-icons');
+            
+            switch(status) {
+                case 'yes':
+                    badgeIcon.textContent = 'check_circle';
+                    badgeText.textContent = 'Servicio Disponible';
+                    coverageMessage.textContent = `Sí, tenemos disponibilidad de servicios dentro de ${locality}`;
+                    // Update button to include location information for direct routing to rural/urban selection
+                    plansButton.href = `planes.html?location=${encodeURIComponent(locality)}&verified=true`;
+                    plansButton.style.display = 'inline-flex';
+                    break;
+                    
+                case 'coming-soon':
+                    badgeIcon.textContent = 'schedule';
+                    badgeText.textContent = 'Próximamente';
+                    coverageMessage.textContent = `No, pero estamos en proceso de conectar nuestros servicios en ${locality}`;
+                    plansButton.style.display = 'none';
+                    break;
+                    
+                case 'no':
+                    badgeIcon.textContent = 'cancel';
+                    badgeText.textContent = 'Servicio No Disponible';
+                    coverageMessage.textContent = `No tenemos cobertura de servicios en ${locality}, consultanos próximamente por novedades. Estamos expandiendo nuestras redes constantemente, para llegar a más hogares en esta región del Chaco.`;
+                    plansButton.style.display = 'none';
+                    break;
+            }
+            
+            coverageResult.classList.add('show');
+        }
+
+        // FAQ Accordion Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    // Close all FAQ items
+                    faqItems.forEach(faqItem => {
+                        faqItem.classList.remove('active');
+                    });
+                    
+                    // Open clicked item if it wasn't active
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>

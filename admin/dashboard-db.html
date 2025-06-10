@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - RED TV (Database)</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="../assets/favicon.svg" type="image/svg+xml">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar styles */
+        .admin-sidebar {
+            width: 250px;
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 20px 0;
+            flex-shrink: 0;
+        }
+        
+        .admin-logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .admin-logo img {
+            height: 40px;
+        }
+        
+        .admin-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .admin-nav li {
+            margin-bottom: 5px;
+        }
+        
+        .admin-nav a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-nav a:hover,
+        .admin-nav a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .admin-nav .material-icons {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .admin-user {
+            margin-top: auto;
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-user .material-icons {
+            margin-right: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 50%;
+        }
+        
+        .admin-user-info {
+            flex: 1;
+        }
+        
+        .admin-user-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .admin-user-role {
+            font-size: 12px;
+            color: #ccc;
+        }
+        
+        .logout-btn {
+            color: #ccc;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .logout-btn:hover {
+            color: white;
+        }
+        
+        /* Main content styles */
+        .admin-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .page-title h1 {
+            margin: 0;
+            font-size: 24px;
+            color: var(--primary-dark);
+        }
+        
+        .header-actions .btn {
+            margin-left: 10px;
+        }
+
+        /* Status indicators */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .status-connected {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .status-loading {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+        
+        /* Plans management styles */
+        .plan-management {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .plans-toolbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .plans-search {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px 10px;
+            width: 300px;
+        }
+        
+        .plans-search input {
+            border: none;
+            background: none;
+            outline: none;
+            padding: 5px;
+            width: 100%;
+            font-size: 14px;
+        }
+        
+        .plans-search .material-icons {
+            color: #999;
+            margin-right: 5px;
+            font-size: 20px;
+        }
+        
+        .btn-add-plan {
+            display: flex;
+            align-items: center;
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-add-plan:hover {
+            background-color: #cc0000;
+        }
+        
+        .btn-add-plan .material-icons {
+            margin-right: 5px;
+            font-size: 20px;
+        }
+        
+        .plans-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .plans-table th {
+            text-align: left;
+            padding: 12px 20px;
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .plans-table td {
+            padding: 12px 20px;
+            border-bottom: 1px solid #eee;
+            color: #333;
+        }
+        
+        .plans-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .plan-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-icon {
+            background: none;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-edit {
+            color: #2196F3;
+        }
+        
+        .btn-edit:hover {
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+        
+        .btn-delete {
+            color: #F44336;
+        }
+        
+        .btn-delete:hover {
+            background-color: rgba(244, 67, 54, 0.1);
+        }
+        
+        .plan-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+        }
+        
+        .status-inactive {
+            background-color: #FFEBEE;
+            color: #C62828;
+        }
+        
+        .status-draft {
+            background-color: #E0E0E0;
+            color: #616161;
+        }
+        
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: var(--primary-dark);
+        }
+        
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .btn-cancel {
+            background-color: #f5f5f5;
+            color: #333;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #eee;
+        }
+        
+        .btn-save {
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-save:hover {
+            background-color: #cc0000;
+        }
+
+        .btn-save:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .form-row {
+            margin-bottom: 15px;
+        }
+        
+        .form-row label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-row input,
+        .form-row select,
+        .form-row textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        .form-row textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        /* Features management */
+        .features-section {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .features-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .feature-item input[type="text"] {
+            flex: 1;
+        }
+
+        .feature-item select {
+            width: 120px;
+        }
+
+        .btn-remove-feature {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-add-feature {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* Availability section */
+        .availability-section {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+        }
+
+        .availability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .locality-group {
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        .locality-group h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: var(--primary-dark);
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 8px;
+            width: auto;
+        }
+
+        .checkbox-item label {
+            margin-bottom: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        /* Loading states */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .loading .material-icons {
+            animation: spin 1s linear infinite;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error states */
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            border-left: 4px solid #f44336;
+        }
+
+        .success-message {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4caf50;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-state .material-icons {
+            font-size: 48px;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <a href="../index.html">
+                    <img src="../logo.png" alt="RED TV Logo">
+                </a>
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li>
+                        <a href="#" class="active" data-panel="planes">
+                            <span class="material-icons">dashboard</span>
+                            Panel de Planes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-panel="stats">
+                            <span class="material-icons">bar_chart</span>
+                            Estadísticas
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-panel="settings">
+                            <span class="material-icons">settings</span>
+                            Configuración
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="admin-user">
+                <span class="material-icons">person</span>
+                <div class="admin-user-info">
+                    <div class="admin-user-name">Admin</div>
+                    <div class="admin-user-role">Administrador</div>
+                </div>
+                <button id="logout-btn" class="logout-btn">
+                    <span class="material-icons">logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- Plans Management Panel -->
+            <div id="planes-panel">
+                <div class="admin-header">
+                    <div class="page-title">
+                        <h1>Gestión de Planes
+                            <span id="db-status" class="status-indicator status-loading">
+                                <span class="material-icons" style="font-size: 14px; margin-right: 4px;">sync</span>
+                                Conectando...
+                            </span>
+                        </h1>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn-add-plan" id="btn-add-plan" disabled>
+                            <span class="material-icons">add</span>
+                            Nuevo Plan
+                        </button>
+                    </div>
+                </div>
+
+                <div class="plan-management">
+                    <div class="plans-toolbar">
+                        <div class="plans-search">
+                            <span class="material-icons">search</span>
+                            <input type="text" placeholder="Buscar planes..." id="plan-search">
+                        </div>
+                    </div>
+
+                    <div id="plans-loading" class="loading">
+                        <div class="material-icons">sync</div>
+                        <div>Cargando planes...</div>
+                    </div>
+
+                    <div id="plans-error" class="error-message" style="display: none;">
+                        Error al cargar los planes. <button onclick="loadPlans()">Reintentar</button>
+                    </div>
+
+                    <div id="plans-table-container" style="display: none;">
+                        <table class="plans-table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre del Plan</th>
+                                    <th>Categoría</th>
+                                    <th>Características</th>
+                                    <th>Precio</th>
+                                    <th>Disponibilidad</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="plans-list">
+                                <!-- Dynamic content will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="plans-empty" class="empty-state" style="display: none;">
+                        <div class="material-icons">inbox</div>
+                        <h3>No hay planes disponibles</h3>
+                        <p>Comienza creando tu primer plan</p>
+                        <button class="btn-add-plan" onclick="openAddPlanModal()">
+                            <span class="material-icons">add</span>
+                            Crear Plan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Plan Modal -->
+    <div class="modal-overlay" id="plan-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modal-title">Agregar Nuevo Plan</h2>
+                <button class="btn-close" id="btn-close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-error" class="error-message" style="display: none;"></div>
+                <div id="modal-success" class="success-message" style="display: none;"></div>
+                
+                <form id="plan-form">
+                    <div class="form-row">
+                        <label for="plan-name">Nombre del Plan *</label>
+                        <input type="text" id="plan-name" required placeholder="Ej: Internet 100MB Fibra">
+                    </div>
+                    <div class="form-row">
+                        <label for="plan-category">Categoría *</label>
+                        <select id="plan-category" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="internet">Internet</option>
+                            <option value="tv">TV</option>
+                            <option value="combo">Combo</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="plan-price">Precio ($) *</label>
+                        <input type="number" id="plan-price" required min="0" step="0.01" placeholder="15000.00">
+                    </div>
+                    
+                    <!-- Features Section -->
+                    <div class="features-section">
+                        <div class="features-header">
+                            <label>Características del Plan</label>
+                            <button type="button" class="btn-add-feature" id="btn-add-feature">
+                                <span class="material-icons" style="font-size: 14px;">add</span>
+                                Agregar
+                            </button>
+                        </div>
+                        <div id="features-container">
+                            <!-- Features will be added dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Availability Section -->
+                    <div class="availability-section">
+                        <div class="availability-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <label>Disponibilidad del Plan</label>
+                            <button type="button" class="btn-add-feature" id="btn-add-location" style="background-color: #28a745;">
+                                <span class="material-icons" style="font-size: 14px;">add_location</span>
+                                Agregar Localidad
+                            </button>
+                        </div>
+                        <div id="availability-loading" class="loading" style="display: none;">
+                            <div class="material-icons">sync</div>
+                            <div>Cargando localidades...</div>
+                        </div>
+                        <div id="availability-container" class="availability-grid">
+                            <!-- Availability options will be loaded dynamically -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="btn-cancel">Cancelar</button>
+                <button class="btn-save" id="btn-save" disabled>
+                    <span id="save-text">Guardar</span>
+                    <span id="save-loading" class="material-icons" style="display: none; font-size: 16px; margin-left: 5px;">sync</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="delete-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Confirmar Eliminación</h2>
+                <button class="btn-close" id="btn-close-delete">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center;">
+                    <span class="material-icons" style="font-size: 48px; color: #f44336;">warning</span>
+                    <h3>¿Estás seguro?</h3>
+                    <p>Esta acción eliminará permanentemente el plan "<span id="delete-plan-name"></span>" y todos sus datos asociados.</p>
+                    <p><strong>Esta acción no se puede deshacer.</strong></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="btn-cancel-delete">Cancelar</button>
+                <button class="btn-save" id="btn-confirm-delete" style="background-color: #f44336;">
+                    <span id="delete-text">Eliminar</span>
+                    <span id="delete-loading" class="material-icons" style="display: none; font-size: 16px; margin-left: 5px;">sync</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Location Modal -->
+    <div class="modal-overlay" id="location-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Agregar Nueva Localidad</h2>
+                <button class="btn-close" id="btn-close-location">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="location-modal-error" class="error-message" style="display: none;"></div>
+                <div id="location-modal-success" class="success-message" style="display: none;"></div>
+                
+                <form id="location-form">
+                    <div class="form-row">
+                        <label for="location-name">Nombre de la Localidad *</label>
+                        <input type="text" id="location-name" required placeholder="Ej: Villa Ángela" maxlength="100">
+                        <small style="color: #666; font-size: 12px;">Ingrese el nombre completo de la localidad</small>
+                    </div>
+                </form>
+                
+                <div style="margin-top: 15px; padding: 10px; background-color: #e3f2fd; border-radius: 4px; border-left: 4px solid #2196f3;">
+                    <strong>📍 Localidades existentes:</strong>
+                    <div id="existing-localities" style="margin-top: 8px; font-size: 14px;">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="btn-cancel-location">Cancelar</button>
+                <button class="btn-save" id="btn-save-location" style="background-color: #28a745;">
+                    <span id="save-location-text">Agregar Localidad</span>
+                    <span id="save-location-loading" class="material-icons" style="display: none; font-size: 16px; margin-left: 5px;">sync</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Supabase from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script type="module">
+        import { AdminDatabaseService } from './js/admin-database.js';
+        import { initSupabase } from './js/supabase-cdn.js';
+
+        // Global variables
+        let currentPlanId = null;
+        let localities = [];
+        let zoneTypes = [];
+        let allPlans = [];
+
+        // DOM elements
+        const dbStatus = document.getElementById('db-status');
+        const addPlanBtn = document.getElementById('btn-add-plan');
+        const planSearch = document.getElementById('plan-search');
+        const planModal = document.getElementById('plan-modal');
+        const deleteModal = document.getElementById('delete-modal');
+        const locationModal = document.getElementById('location-modal');
+        const planForm = document.getElementById('plan-form');
+        const locationForm = document.getElementById('location-form');
+        const plansLoading = document.getElementById('plans-loading');
+        const plansError = document.getElementById('plans-error');
+        const plansTableContainer = document.getElementById('plans-table-container');
+        const plansEmpty = document.getElementById('plans-empty');
+        const plansList = document.getElementById('plans-list');
+
+        // Initialize the application
+        async function initApp() {
+            try {
+                // Initialize Supabase
+                await initSupabase();
+                updateDbStatus('connected', 'Conectado');
+                
+                // Enable the add plan button
+                addPlanBtn.disabled = false;
+                
+                // Load initial data
+                await loadLocalities();
+                await loadPlans();
+                
+                console.log('✅ Admin dashboard initialized successfully');
+            } catch (error) {
+                console.error('❌ Failed to initialize admin dashboard:', error);
+                updateDbStatus('error', 'Error de conexión');
+                showError('Error al conectar con la base de datos: ' + error.message);
+            }
+        }
+
+        // Update database status indicator
+        function updateDbStatus(status, text) {
+            dbStatus.className = `status-indicator status-${status}`;
+            const icon = status === 'connected' ? 'check_circle' : 
+                        status === 'error' ? 'error' : 'sync';
+            dbStatus.innerHTML = `<span class="material-icons" style="font-size: 14px; margin-right: 4px;">${icon}</span>${text}`;
+        }
+
+        // Load localities and zone types
+        async function loadLocalities() {
+            try {
+                [localities, zoneTypes] = await Promise.all([
+                    AdminDatabaseService.getLocalities(),
+                    AdminDatabaseService.getZoneTypes()
+                ]);
+                console.log(`Loaded ${localities.length} localities and ${zoneTypes.length} zone types`);
+            } catch (error) {
+                console.error('Error loading localities:', error);
+                throw error;
+            }
+        }
+
+        // Load plans from database
+        async function loadPlans() {
+            try {
+                plansLoading.style.display = 'block';
+                plansError.style.display = 'none';
+                plansTableContainer.style.display = 'none';
+                plansEmpty.style.display = 'none';
+
+                allPlans = await AdminDatabaseService.getPlansWithFeatures();
+                
+                if (allPlans.length === 0) {
+                    plansEmpty.style.display = 'block';
+                } else {
+                    renderPlansTable(allPlans);
+                    plansTableContainer.style.display = 'block';
+                }
+                
+                plansLoading.style.display = 'none';
+                console.log(`Loaded ${allPlans.length} plans`);
+            } catch (error) {
+                console.error('Error loading plans:', error);
+                plansLoading.style.display = 'none';
+                plansError.style.display = 'block';
+                plansError.textContent = 'Error al cargar los planes: ' + error.message;
+            }
+        }
+
+        // Render plans table
+        function renderPlansTable(plans) {
+            plansList.innerHTML = '';
+            
+            plans.forEach(plan => {
+                const row = document.createElement('tr');
+                
+                // Features summary
+                const featuresText = plan.features && plan.features.length > 0 
+                    ? plan.features.slice(0, 2).map(f => f.description).join(', ') + 
+                      (plan.features.length > 2 ? '...' : '')
+                    : 'Sin características';
+
+                // Get availability count
+                const availabilityText = `${plan.features?.length || 0} características`;
+
+                row.innerHTML = `
+                    <td><strong>${plan.name}</strong></td>
+                    <td><span class="plan-category">${plan.plan_category}</span></td>
+                    <td>${featuresText}</td>
+                    <td><strong>$${Number(plan.price).toLocaleString()}</strong></td>
+                    <td>${availabilityText}</td>
+                    <td>
+                        <div class="plan-actions">
+                            <button class="btn-icon btn-edit" onclick="editPlan('${plan.id}')" title="Editar">
+                                <span class="material-icons">edit</span>
+                            </button>
+                            <button class="btn-icon btn-delete" onclick="deletePlan('${plan.id}', '${plan.name}')" title="Eliminar">
+                                <span class="material-icons">delete</span>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                plansList.appendChild(row);
+            });
+        }
+
+        // Open add plan modal
+        function openAddPlanModal() {
+            currentPlanId = null;
+            document.getElementById('modal-title').textContent = 'Agregar Nuevo Plan';
+            planForm.reset();
+            clearFeatures();
+            addFeature(); // Add one empty feature
+            loadAvailabilityOptions();
+            showModal(planModal);
+            
+            // Enable save button and setup form validation
+            setupFormValidation();
+        }
+
+        // Setup form validation
+        function setupFormValidation() {
+            const saveBtn = document.getElementById('btn-save');
+            const planName = document.getElementById('plan-name');
+            const planCategory = document.getElementById('plan-category');
+            const planPrice = document.getElementById('plan-price');
+            
+            // Enable save button initially
+            saveBtn.disabled = false;
+            
+            // Add real-time validation
+            function validateForm() {
+                const isValid = planName.value.trim() && 
+                               planCategory.value && 
+                               planPrice.value && 
+                               parseFloat(planPrice.value) > 0;
+                
+                saveBtn.disabled = !isValid;
+            }
+            
+            // Add event listeners for real-time validation
+            planName.addEventListener('input', validateForm);
+            planCategory.addEventListener('change', validateForm);
+            planPrice.addEventListener('input', validateForm);
+            
+            // Initial validation
+            validateForm();
+        }
+
+        // Edit plan
+        window.editPlan = async function(planId) {
+            try {
+                currentPlanId = planId;
+                document.getElementById('modal-title').textContent = 'Editar Plan';
+                
+                // Load plan data
+                const plan = await AdminDatabaseService.getPlanForEdit(planId);
+                
+                // Fill form
+                document.getElementById('plan-name').value = plan.name;
+                document.getElementById('plan-category').value = plan.plan_category;
+                document.getElementById('plan-price').value = plan.price;
+                
+                // Load features
+                clearFeatures();
+                if (plan.features && plan.features.length > 0) {
+                    plan.features.forEach(feature => {
+                        addFeature(feature.description, feature.icon_name);
+                    });
+                } else {
+                    addFeature(); // Add one empty feature
+                }
+                
+                // Load availability
+                await loadAvailabilityOptions();
+                
+                // Set availability checkboxes
+                if (plan.availability) {
+                    plan.availability.forEach(avail => {
+                        const checkboxId = `${avail.localities.name.toLowerCase()}-${avail.zone_types.name.toLowerCase()}`;
+                        const checkbox = document.getElementById(checkboxId);
+                        if (checkbox) {
+                            checkbox.checked = true;
+                        }
+                    });
+                }
+                
+                showModal(planModal);
+                
+                // Enable save button and setup form validation
+                setupFormValidation();
+                
+            } catch (error) {
+                console.error('Error loading plan for edit:', error);
+                showError('Error al cargar el plan: ' + error.message);
+            }
+        };
+
+        // Delete plan
+        window.deletePlan = function(planId, planName) {
+            currentPlanId = planId;
+            document.getElementById('delete-plan-name').textContent = planName;
+            showModal(deleteModal);
+        };
+
+        // Features management
+        function addFeature(description = '', icon = 'check_circle') {
+            const container = document.getElementById('features-container');
+            const featureDiv = document.createElement('div');
+            featureDiv.className = 'feature-item';
+            
+            featureDiv.innerHTML = `
+                <select class="feature-icon">
+                    <option value="speed" ${icon === 'speed' ? 'selected' : ''}>🚀 Velocidad</option>
+                    <option value="wifi" ${icon === 'wifi' ? 'selected' : ''}>📶 WiFi</option>
+                    <option value="tv" ${icon === 'tv' ? 'selected' : ''}>📺 TV</option>
+                    <option value="router" ${icon === 'router' ? 'selected' : ''}>📡 Router</option>
+                    <option value="support" ${icon === 'support' ? 'selected' : ''}>🎧 Soporte</option>
+                    <option value="hd" ${icon === 'hd' ? 'selected' : ''}>🎬 HD</option>
+                    <option value="upload" ${icon === 'upload' ? 'selected' : ''}>⬆️ Subida</option>
+                    <option value="device_hub" ${icon === 'device_hub' ? 'selected' : ''}>📱 Dispositivos</option>
+                    <option value="check_circle" ${icon === 'check_circle' ? 'selected' : ''}>✅ General</option>
+                </select>
+                <input type="text" class="feature-description" placeholder="Descripción de la característica" value="${description}">
+                <button type="button" class="btn-remove-feature" onclick="removeFeature(this)">
+                    <span class="material-icons" style="font-size: 14px;">remove</span>
+                </button>
+            `;
+            
+            container.appendChild(featureDiv);
+        }
+
+        window.removeFeature = function(button) {
+            button.parentElement.remove();
+        };
+
+        function clearFeatures() {
+            document.getElementById('features-container').innerHTML = '';
+        }
+
+        // Load availability options
+        async function loadAvailabilityOptions() {
+            const container = document.getElementById('availability-container');
+            const loading = document.getElementById('availability-loading');
+            
+            try {
+                loading.style.display = 'block';
+                container.innerHTML = '';
+                
+                // Group by localities
+                localities.forEach(locality => {
+                    const localityDiv = document.createElement('div');
+                    localityDiv.className = 'locality-group';
+                    
+                    let zoneCheckboxes = '';
+                    zoneTypes.forEach(zoneType => {
+                        const checkboxId = `${locality.name.toLowerCase()}-${zoneType.name.toLowerCase()}`;
+                        zoneCheckboxes += `
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="${checkboxId}" name="availability[]" value="${checkboxId}">
+                                <label for="${checkboxId}">${zoneType.name}</label>
+                            </div>
+                        `;
+                    });
+                    
+                    localityDiv.innerHTML = `
+                        <h4>${locality.name}</h4>
+                        ${zoneCheckboxes}
+                    `;
+                    
+                    container.appendChild(localityDiv);
+                });
+                
+                loading.style.display = 'none';
+            } catch (error) {
+                console.error('Error loading availability options:', error);
+                loading.style.display = 'none';
+                container.innerHTML = '<div class="error-message">Error al cargar las opciones de disponibilidad</div>';
+            }
+        }
+
+        // Save plan
+        async function savePlan() {
+            try {
+                const saveBtn = document.getElementById('btn-save');
+                const saveText = document.getElementById('save-text');
+                const saveLoading = document.getElementById('save-loading');
+                
+                // Disable button and show loading
+                saveBtn.disabled = true;
+                saveText.style.display = 'none';
+                saveLoading.style.display = 'inline';
+                
+                // Collect form data
+                const planData = {
+                    name: document.getElementById('plan-name').value.trim(),
+                    category: document.getElementById('plan-category').value,
+                    price: parseFloat(document.getElementById('plan-price').value),
+                    features: [],
+                    availability: []
+                };
+
+                // Validate required fields
+                if (!planData.name || !planData.category || !planData.price) {
+                    throw new Error('Por favor complete todos los campos requeridos');
+                }
+
+                // Collect features
+                const featureItems = document.querySelectorAll('.feature-item');
+                featureItems.forEach(item => {
+                    const description = item.querySelector('.feature-description').value.trim();
+                    const icon = item.querySelector('.feature-icon').value;
+                    if (description) {
+                        planData.features.push({ description, icon });
+                    }
+                });
+
+                // Collect availability
+                const availabilityCheckboxes = document.querySelectorAll('input[name="availability[]"]:checked');
+                const availabilityValues = Array.from(availabilityCheckboxes).map(cb => cb.value);
+                planData.availability = await AdminDatabaseService.parseAvailabilityFromForm(availabilityValues);
+
+                // Save or update plan
+                let result;
+                if (currentPlanId) {
+                    result = await AdminDatabaseService.updatePlanWithFeatures(currentPlanId, planData);
+                    showSuccess('Plan actualizado correctamente');
+                } else {
+                    result = await AdminDatabaseService.createPlanWithFeatures(planData);
+                    showSuccess('Plan creado correctamente');
+                }
+
+                // Reload plans and close modal
+                await loadPlans();
+                hideModal(planModal);
+                
+            } catch (error) {
+                console.error('Error saving plan:', error);
+                showError('Error al guardar el plan: ' + error.message);
+            } finally {
+                // Re-enable button
+                const saveBtn = document.getElementById('btn-save');
+                const saveText = document.getElementById('save-text');
+                const saveLoading = document.getElementById('save-loading');
+                
+                saveBtn.disabled = false;
+                saveText.style.display = 'inline';
+                saveLoading.style.display = 'none';
+            }
+        }
+
+        // Confirm delete plan
+        async function confirmDeletePlan() {
+            try {
+                const deleteBtn = document.getElementById('btn-confirm-delete');
+                const deleteText = document.getElementById('delete-text');
+                const deleteLoading = document.getElementById('delete-loading');
+                
+                // Disable button and show loading
+                deleteBtn.disabled = true;
+                deleteText.style.display = 'none';
+                deleteLoading.style.display = 'inline';
+                
+                await AdminDatabaseService.deletePlan(currentPlanId);
+                
+                showSuccess('Plan eliminado correctamente');
+                await loadPlans();
+                hideModal(deleteModal);
+                
+            } catch (error) {
+                console.error('Error deleting plan:', error);
+                showError('Error al eliminar el plan: ' + error.message);
+            } finally {
+                // Re-enable button
+                const deleteBtn = document.getElementById('btn-confirm-delete');
+                const deleteText = document.getElementById('delete-text');
+                const deleteLoading = document.getElementById('delete-loading');
+                
+                deleteBtn.disabled = false;
+                deleteText.style.display = 'inline';
+                deleteLoading.style.display = 'none';
+            }
+        }
+
+        // Search functionality
+        function setupSearch() {
+            planSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                
+                if (searchTerm === '') {
+                    renderPlansTable(allPlans);
+                } else {
+                    const filteredPlans = allPlans.filter(plan => 
+                        plan.name.toLowerCase().includes(searchTerm) ||
+                        plan.plan_category.toLowerCase().includes(searchTerm) ||
+                        (plan.features && plan.features.some(f => 
+                            f.description.toLowerCase().includes(searchTerm)
+                        ))
+                    );
+                    renderPlansTable(filteredPlans);
+                }
+            });
+        }
+
+        // Modal utilities
+        function showModal(modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideModal(modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            clearMessages();
+        }
+
+        // Message utilities
+        function showError(message) {
+            const errorDiv = document.getElementById('modal-error');
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 5000);
+            } else {
+                alert('Error: ' + message);
+            }
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('modal-success');
+            if (successDiv) {
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+                setTimeout(() => {
+                    successDiv.style.display = 'none';
+                }, 3000);
+            } else {
+                alert(message);
+            }
+        }
+
+        function clearMessages() {
+            const errorDiv = document.getElementById('modal-error');
+            const successDiv = document.getElementById('modal-success');
+            if (errorDiv) errorDiv.style.display = 'none';
+            if (successDiv) successDiv.style.display = 'none';
+        }
+
+        // Location management functions
+        function openAddLocationModal() {
+            document.getElementById('location-name').value = '';
+            loadExistingLocalities();
+            clearLocationMessages();
+            showModal(locationModal);
+        }
+
+        function loadExistingLocalities() {
+            const container = document.getElementById('existing-localities');
+            if (localities.length === 0) {
+                container.innerHTML = '<em style="color: #666;">No hay localidades registradas</em>';
+            } else {
+                const localityList = localities.map(loc => `<span style="display: inline-block; background: #f0f0f0; padding: 2px 8px; margin: 2px; border-radius: 12px; font-size: 12px;">${loc.name}</span>`).join('');
+                container.innerHTML = localityList;
+            }
+        }
+
+        async function saveLocation() {
+            try {
+                const saveBtn = document.getElementById('btn-save-location');
+                const saveText = document.getElementById('save-location-text');
+                const saveLoading = document.getElementById('save-location-loading');
+                
+                // Disable button and show loading
+                saveBtn.disabled = true;
+                saveText.style.display = 'none';
+                saveLoading.style.display = 'inline';
+                
+                const locationName = document.getElementById('location-name').value.trim();
+                
+                // Validate
+                if (!locationName) {
+                    throw new Error('Por favor ingrese el nombre de la localidad');
+                }
+                
+                if (locationName.length < 2) {
+                    throw new Error('El nombre debe tener al menos 2 caracteres');
+                }
+                
+                // Check if locality already exists
+                const existingLocality = localities.find(loc => 
+                    loc.name.toLowerCase() === locationName.toLowerCase()
+                );
+                
+                if (existingLocality) {
+                    throw new Error('Esta localidad ya existe');
+                }
+                
+                // Create the locality
+                const newLocality = await AdminDatabaseService.createLocality(locationName);
+                
+                // Add to local array
+                localities.push(newLocality);
+                localities.sort((a, b) => a.name.localeCompare(b.name));
+                
+                showLocationSuccess('Localidad agregada correctamente');
+                
+                // Reload availability options if plan modal is open
+                if (planModal.style.display === 'flex') {
+                    await loadAvailabilityOptions();
+                }
+                
+                // Close modal after a short delay
+                setTimeout(() => {
+                    hideModal(locationModal);
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Error saving location:', error);
+                showLocationError('Error al agregar la localidad: ' + error.message);
+            } finally {
+                // Re-enable button
+                const saveBtn = document.getElementById('btn-save-location');
+                const saveText = document.getElementById('save-location-text');
+                const saveLoading = document.getElementById('save-location-loading');
+                
+                saveBtn.disabled = false;
+                saveText.style.display = 'inline';
+                saveLoading.style.display = 'none';
+            }
+        }
+
+        function showLocationError(message) {
+            const errorDiv = document.getElementById('location-modal-error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function showLocationSuccess(message) {
+            const successDiv = document.getElementById('location-modal-success');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function clearLocationMessages() {
+            const errorDiv = document.getElementById('location-modal-error');
+            const successDiv = document.getElementById('location-modal-success');
+            if (errorDiv) errorDiv.style.display = 'none';
+            if (successDiv) successDiv.style.display = 'none';
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize app
+            initApp();
+            
+            // Setup search
+            setupSearch();
+            
+            // Modal controls
+            document.getElementById('btn-add-plan').addEventListener('click', openAddPlanModal);
+            document.getElementById('btn-add-feature').addEventListener('click', () => addFeature());
+            document.getElementById('btn-add-location').addEventListener('click', openAddLocationModal);
+            document.getElementById('btn-save').addEventListener('click', savePlan);
+            document.getElementById('btn-save-location').addEventListener('click', saveLocation);
+            document.getElementById('btn-confirm-delete').addEventListener('click', confirmDeletePlan);
+            
+            // Close modal buttons
+            document.getElementById('btn-close-modal').addEventListener('click', () => hideModal(planModal));
+            document.getElementById('btn-cancel').addEventListener('click', () => hideModal(planModal));
+            document.getElementById('btn-close-delete').addEventListener('click', () => hideModal(deleteModal));
+            document.getElementById('btn-cancel-delete').addEventListener('click', () => hideModal(deleteModal));
+            document.getElementById('btn-close-location').addEventListener('click', () => hideModal(locationModal));
+            document.getElementById('btn-cancel-location').addEventListener('click', () => hideModal(locationModal));
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === planModal) hideModal(planModal);
+                if (e.target === deleteModal) hideModal(deleteModal);
+                if (e.target === locationModal) hideModal(locationModal);
+            });
+            
+            // Logout
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+        });
+
+        // Make functions available globally
+        window.openAddPlanModal = openAddPlanModal;
+        window.loadPlans = loadPlans;
+    </script>
+</body>
+</html> 

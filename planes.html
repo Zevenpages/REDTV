@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planes - RED TV</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/planes.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <!-- Header - Will be populated by header.js -->
+    <header class="header"></header>
+
+    <!-- Page Title -->
+    <section class="page-title">
+        <div class="container">
+            <h1>Planes y Servicios</h1>
+            <p>Descubrí los servicios disponibles en tu localidad</p>
+        </div>
+    </section>
+
+    <!-- Service Selection Wizard -->
+    <section class="service-wizard">
+        <div class="container">
+            <div class="wizard-steps">
+                <!-- Step 1: Locality Selection -->
+                <div class="wizard-step active" id="step-locality">
+                    <h2>1. Seleccioná tu localidad</h2>
+                    <div class="form-group">
+                        <select id="locality-select" class="form-control">
+                            <option value="" disabled selected>Cargando localidades...</option>
+                        </select>
+                    </div>
+                    <div class="wizard-buttons">
+                        <button class="btn btn-primary next-step" id="locality-next" disabled>Siguiente</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Zone Type Selection -->
+                <div class="wizard-step" id="step-zone">
+                    <h2>2. Tipo de zona</h2>
+                    <div class="zone-toggle" id="zone-toggle">
+                        <!-- Zone options will be loaded dynamically -->
+                    </div>
+                    <div class="wizard-buttons">
+                        <button class="btn btn-secondary prev-step">Anterior</button>
+                        <button class="btn btn-primary next-step">Ver Servicios Disponibles</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Available Services Section -->
+    <section class="available-services" id="services-section" style="display: none;">
+        <div class="container">
+            <h2>Servicios Disponibles en zona <span id="selected-zone">-</span> de <span id="selected-locality">-</span></h2>
+            
+            <!-- Loading State -->
+            <div id="services-loading" style="text-align: center; padding: 40px; display: none;">
+                <div class="material-icons" style="font-size: 48px; color: #ccc; animation: spin 1s linear infinite;">sync</div>
+                <p>Cargando servicios disponibles...</p>
+            </div>
+            
+            <!-- Error State -->
+            <div id="services-error" style="display: none; text-align: center; padding: 40px; color: #d32f2f;">
+                <div class="material-icons" style="font-size: 48px; margin-bottom: 10px;">error</div>
+                <p>Error al cargar los servicios. <button onclick="loadAvailableServices()" style="background: none; border: none; color: #1976d2; text-decoration: underline; cursor: pointer;">Reintentar</button></p>
+            </div>
+            
+            <!-- Empty State -->
+            <div id="services-empty" style="display: none; text-align: center; padding: 40px; color: #666;">
+                <div class="material-icons" style="font-size: 48px; margin-bottom: 10px;">inbox</div>
+                <h3>No hay servicios disponibles</h3>
+                <p>Lo sentimos, no tenemos servicios disponibles para esta combinación de localidad y zona.</p>
+                <p>Contactanos para más información sobre próximas expansiones.</p>
+                <a href="https://api.whatsapp.com/send?phone=543794069046&text=Hola%20%F0%9F%91%8B%0A%0AVengo%20de%20la%20p%C3%A1gina%20de%20Red%20TV%2C%20quiero%20obtener%20informaci%C3%B3n%20sobre%20servicios%20en%20mi%20zona" class="btn btn-primary" target="_blank">Contactar</a>
+            </div>
+            
+            <div class="services-grid" id="services-grid">
+                <!-- Service cards will be populated here via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Support Contact Section -->
+    <section class="support-contact">
+        <div class="container">
+            <div class="support-content">
+                <button class="btn btn-primary support-btn" onclick="contactSupport()">
+                    Contactar soporte
+                </button>
+                <p class="support-text">¿Necesitás ayuda? Contactanos y te asesoramos en tu mejor opción.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer - Will be populated by footer.js -->
+    <footer class="footer"></footer>
+
+    <!-- Load Supabase from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script src="js/header.js"></script>
+    <script src="js/footer.js"></script>
+    <script src="js/main.js"></script>
+    <script type="module" src="js/planes.js"></script>
+    
+    <script>
+        // Handle verified location from homepage
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const location = urlParams.get('location');
+            const verified = urlParams.get('verified');
+            
+            // If location is verified, skip to zone selection
+            if (location && verified === 'true') {
+                // Store the verified location for later use
+                window.verifiedLocation = location;
+                
+                // The planes.js will handle the rest of the logic
+            }
+        });
+    </script>
+
+    <!-- Configuration Options Modal -->
+    <div id="configOptionsModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Configurá tu Plan</h2>
+            <p>Cada servicio tiene diferentes opciones, puedes configurar a tu gusto: Velocidad de internet y cantidad de canales de TV.</p>
+            <p>Además, para usuarios que lo deseen, ofrecemos IP pública o privada.</p>
+            <button id="modalEntendidoBtn" class="btn btn-primary">Entendido</button>
+        </div>
+    </div>
+
+    <!-- Contratación Modal -->
+    <div id="contratacionModal" class="modal" style="display:none;">
+        <div class="modal-content form-modal-content">
+            <span class="close-button contratacion-close-button">&times;</span>
+            <h2>Contratar Servicio</h2>
+            <form id="contratacionForm">
+                <div class="form-group">
+                    <label for="nombreCompleto">Nombre Completo *</label>
+                    <input type="text" id="nombreCompleto" name="nombreCompleto" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="direccion">Dirección *</label>
+                    <input type="text" id="direccion" name="direccion" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="servicio">Plan Seleccionado</label>
+                    <input type="text" id="servicio" name="servicio" class="form-control" readonly>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="closeContratacionModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Enviar por WhatsApp</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</body>
+</html> 
