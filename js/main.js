@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle and footer year are now handled in header.js and footer.js
     
     // Wait a bit for the DOM to be fully rendered with the components
-    setTimeout(() => {
+    setTimeout(async () => {
         console.log("Executing main page modifications...");
         
         // First adjust position of Ver Planes and Mis Servicios buttons
@@ -16,6 +16,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Then initialize the interactive coverage map
         initInteractiveCoverageMap();
+        
+        // Initialize app downloads functionality
+        try {
+            const { initAppDownloads } = await import('./app-downloads.js');
+            initAppDownloads();
+        } catch (error) {
+            console.error('Error initializing app downloads:', error);
+        }
         
         // Finally swap the coverage and app-promo sections if we're on the index page
         swapSections();
