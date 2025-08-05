@@ -16,7 +16,7 @@ const APP_FILES = {
         description: 'REDTV Basic para Celular'
     },
     'premium-tv': {
-        filename: 'Red Tv Premium - Smart TV.apk', // Update if you have a separate Premium TV file
+        filename: 'RedTv Premium - Smart TV.apk', // Update if you have a separate Premium TV file
         bucket: 'descargas',
         description: 'REDTV Premium para TV'
     },
