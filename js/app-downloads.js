@@ -55,13 +55,13 @@ async function handleDownloadClick(event) {
     // Determine which app to download based on button text
     let appType = null;
     
-    if (buttonText.includes('Basic TV')) {
+    if (buttonText.includes('Smart TV') && buttonText.includes('Basic')) {
         appType = 'basic-tv';
-    } else if (buttonText.includes('Basic Celular')) {
+    } else if ((buttonText.includes('SmartPhones') || buttonText.includes('Tablets')) && buttonText.includes('Basic')) {
         appType = 'basic-celular';
-    } else if (buttonText.includes('Premium TV')) {
+    } else if (buttonText.includes('Smart TV') && buttonText.includes('Premium')) {
         appType = 'premium-tv';
-    } else if (buttonText.includes('Premium Celular')) {
+    } else if ((buttonText.includes('SmartPhones') || buttonText.includes('Tablets')) && buttonText.includes('Premium')) {
         appType = 'premium-celular';
     }
     
